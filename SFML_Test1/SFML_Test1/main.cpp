@@ -103,8 +103,24 @@ int main()
 					//call game's mouse clicked update function
 				}
 			}	
-		}
 
+			//if keyboard pressed
+			if (event.type == sf::Event::KeyPressed)
+			{
+				if (game_state == intro)
+				{
+					//nothing...
+				}
+				else if (game_state == menu)
+				{
+					//game_menu.KeyBoard_Press_update();
+				}
+				else if (game_state == game)
+				{
+					//nothing...
+				}
+			}
+		}
 	}
 	thread.join();
 	return 0;
@@ -124,7 +140,7 @@ void PlayIntro(sf::RenderWindow *window)
 	//whiten the screen
 	for (int i = 1; i < 255;)
 	{
-		window->clear();
+		window->clear(sf::Color::White);
 
 		if (clock.getElapsedTime() > t1)
 		{
@@ -135,8 +151,8 @@ void PlayIntro(sf::RenderWindow *window)
 		window->draw(introImageRectangle);
 		window->display();
 	}
-	//wait 1 sec
-	sf::Time t2 = sf::seconds(1.0);
+	//wait 0.5 sec
+	sf::Time t2 = sf::seconds(0.5);
 	clock.restart();
 	while (clock.getElapsedTime() < t2)
 	{
@@ -145,7 +161,7 @@ void PlayIntro(sf::RenderWindow *window)
 	//blacken the screen
 	for (int i = 1; i < 255;)
 	{
-		window->clear();
+		window->clear(sf::Color::White);
 
 		if (clock.getElapsedTime() > t1)
 		{
@@ -167,7 +183,7 @@ void renderingThread(sf::RenderWindow* window, Menu *ptrmenu)
 	while (window->isOpen())
 	{
 		//clear...
-		window->clear();
+		window->clear(sf::Color::White);
 
 		//if the game state is "intro", play the introduction animation.
 		if (game_state == Game_State::intro)

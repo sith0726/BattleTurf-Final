@@ -16,7 +16,6 @@ class Menu
 private:
 	Menu_state menu_state;
 	//Graphics
-	sf::RectangleShape background;
 
 	sf::Texture gameTitle_Texture;
 	sf::RectangleShape gameTitle;
@@ -31,12 +30,18 @@ private:
 	Button clientHostBackButton;
 	//client/host next button
 	Button clientHostNextButton;
+
 	//client text:enter IP
 	sf::Font font;
-	sf::Text EnterIP;
+	sf::Text txt_EnterIP;
+	//cllient text: IP
+	sf::Text txt_serverIP;
+	sf::String serverIP;
 	
 	//IP input box in client
 	sf::RectangleShape IPinputbox;
+
+	void ModifyIP(char key);
 public:
 	//
 	Menu();
@@ -48,4 +53,6 @@ public:
 	void Mouse_moved_update(sf::Vector2i &mouseposition);
 	//call in mouse-clicked event
 	void Mouse_clicked_update(sf::Vector2i &mouseposition);
+	//call when keyboard pressed
+	//void KeyBoard_Press_update();
 };

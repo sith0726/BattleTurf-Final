@@ -6,10 +6,6 @@ Menu::Menu()
 	//initialization
 	//the menu state starts at mainmenu.
 	menu_state = mainmenu;
-	//background
-	background.setSize(sf::Vector2f(600, 600));
-	background.setFillColor(sf::Color::White);
-	background.setPosition(sf::Vector2f(0, 0));
 	//gameTitle and its texture
 	gameTitle.setPosition(sf::Vector2f(100, 0));
 	gameTitle.setSize(sf::Vector2f(400, 300));
@@ -57,22 +53,28 @@ Menu::Menu()
 										  &AssetManager::GetTexture("Texture/button_next_focus_4_1.png"));
 	clientHostNextButton.change_texture_to_normal();
 
-	
 	//Text...font...
 	font.loadFromFile("arial.ttf");
 	//EnterIP String
-	EnterIP.setCharacterSize(40);
-	EnterIP.setPosition(sf::Vector2f(200, 300));
-	EnterIP.setString("Enter IP:");
-	EnterIP.setColor(sf::Color::Black);
-	EnterIP.setFont(font);
+	txt_EnterIP.setCharacterSize(40);
+	txt_EnterIP.setPosition(sf::Vector2f(150, 325));
+	txt_EnterIP.setString("Enter IP:");
+	txt_EnterIP.setColor(sf::Color::Black);
+	txt_EnterIP.setFont(font);
 
 	//IP input box in client
-	IPinputbox.setPosition(sf::Vector2f(200, 400));
-	IPinputbox.setSize(sf::Vector2f(200, 50));
+	IPinputbox.setPosition(sf::Vector2f(150, 400));
+	IPinputbox.setSize(sf::Vector2f(300, 50));
 	IPinputbox.setFillColor(sf::Color::White);
 	IPinputbox.setOutlineThickness(2);
 	IPinputbox.setOutlineColor(sf::Color::Black);
+
+	//IP server IP in client
+	txt_serverIP.setPosition(sf::Vector2f(150, 400));
+	txt_serverIP.setCharacterSize(40);
+	txt_serverIP.setColor(sf::Color::Black);
+	txt_serverIP.setFont(font);
+	
 }
 
 void Menu::Graphic_update(sf::RenderWindow *window)
@@ -80,7 +82,6 @@ void Menu::Graphic_update(sf::RenderWindow *window)
 	//in main menu, show the background, gameTitle, start and exit button.
 	if (menu_state == mainmenu)
 	{
-		window->draw(background);
 		window->draw(gameTitle);
 		window->draw(startButton);
 		window->draw(exitButton);
@@ -88,7 +89,6 @@ void Menu::Graphic_update(sf::RenderWindow *window)
 	//in setting1, show the background, gameTitle, client or host button.
 	else if (menu_state == setting1)
 	{
-		window->draw(background);
 		window->draw(gameTitle);
 		window->draw(clientButton);
 		window->draw(hostButton);
@@ -97,12 +97,17 @@ void Menu::Graphic_update(sf::RenderWindow *window)
 	//in client
 	else if (menu_state == multiplayer_client)
 	{
-		window->draw(background);
 		window->draw(gameTitle);
 		window->draw(clientHostBackButton);
 		window->draw(clientHostNextButton);
-		window->draw(EnterIP);
+		window->draw(txt_EnterIP);
 		window->draw(IPinputbox);
+		window->draw(txt_serverIP);
+	}
+	//in host
+	else if (menu_state == multiplayer_lobby_host)
+	{
+		
 	}
 
 }
@@ -239,3 +244,39 @@ void Menu::Mouse_clicked_update(sf::Vector2i &mouseposition)
 		}
 	}
 }
+/*//KeyBoard pressed
+void Menu::KeyBoard_Press_update()
+{
+	if (menu_state == multiplayer_client)
+	{
+		ModifyIP(key);
+	}
+}
+
+//Modify IP in client phase
+void Menu::ModifyIP(char key)
+{
+	if (serverIP.getSize() < 15)
+	{
+		//if it is 0~9
+		if (key >= 48 && key <= 57)
+		{
+			serverIP += static_cast<char>(key);
+		}
+
+		//if it is period '.'
+		if (key == 46)
+		{
+			serverIP += '.';
+		}
+	}
+	//if it is backspace
+	if (key == 8)
+	{
+		if (!serverIP.isEmpty())
+			serverIP.erase(serverIP.getSize() - 1, 1);
+	}
+	//update the text
+	txt_serverIP.setString(serverIP);
+}
+*/
