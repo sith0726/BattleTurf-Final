@@ -24,7 +24,12 @@ sf::Texture& AssetManager::GetTexture(std::string const& filename)
 	else
 	{
 		auto& texture = texMap[filename];
+
+#ifdef _WIN32
 		texture.loadFromFile(filename);
+#elif __MACH__
+		//texture.loadFromFile(resourcePath() + filename);
+#endif
 		return texture;
 	}
 }

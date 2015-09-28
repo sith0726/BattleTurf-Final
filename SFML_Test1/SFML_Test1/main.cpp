@@ -19,6 +19,9 @@ void renderingThread(sf::RenderWindow*, Menu*);
 
 int main()
 {
+#ifdef __Apple__
+	std::cout << "Hello window!" << std::endl;
+#endif
 	// create the window (remember: it's safer to create it in the main thread due to OS limitations)
 	sf::RenderWindow window(sf::VideoMode(600, 600), "Test", sf::Style::Close);
 
