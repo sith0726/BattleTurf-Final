@@ -53,14 +53,19 @@ Menu::Menu()
 										  &AssetManager::GetTexture("Texture/button_next_focus_4_1.png"));
 	clientHostNextButton.change_texture_to_normal();
 
-	//Text...font...
-	font.loadFromFile("arial.ttf");
+    //font
+    //move this into resource manager!
+#ifdef _WIN32
+    font.loadFromFile("Texture/arial.ttf");
+#elif __MACH__
+    font.loadFromFile(resourcePath() + "Texture/arial.ttf");
+#endif
 	//EnterIP String
 	txt_EnterIP.setCharacterSize(40);
 	txt_EnterIP.setPosition(sf::Vector2f(150, 325));
 	txt_EnterIP.setString("Enter IP:");
 	txt_EnterIP.setColor(sf::Color::Black);
-	txt_EnterIP.setFont(font);
+    txt_EnterIP.setFont(font);
 
 	//IP input box in client
 	IPinputbox.setPosition(sf::Vector2f(150, 400));

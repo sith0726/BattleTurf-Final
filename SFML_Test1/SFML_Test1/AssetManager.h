@@ -2,12 +2,15 @@
 #include <map>
 #include <assert.h>
 
+#include "ResourcePath.hpp"
+
 class AssetManager
 {
 private:
-	std::map<std::string, sf::Texture> m_Textures;
+    //texture handler
+	std::map<std::string, sf::Texture> m_Textures;  //map of textures
 
-	static AssetManager *sInstance;
+    static AssetManager* sInstance;
 public:
 	AssetManager();
 

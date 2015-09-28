@@ -1,3 +1,6 @@
+//The resource directory of Windows and Mac is different.
+//So for mac I have to add a resourcePath funcion to
+//ensure it can read the files.
 #include "AssetManager.h"
 
 AssetManager* AssetManager::sInstance = 0;
@@ -8,8 +11,9 @@ AssetManager::AssetManager()
 	if (sInstance == 0)
 	{
 		assert(sInstance == 0);
-		sInstance = this;
+        sInstance = this;
 	}
+    
 }
 
 sf::Texture& AssetManager::GetTexture(std::string const& filename)
@@ -28,7 +32,7 @@ sf::Texture& AssetManager::GetTexture(std::string const& filename)
 #ifdef _WIN32
 		texture.loadFromFile(filename);
 #elif __MACH__
-		//texture.loadFromFile(resourcePath() + filename);
+		texture.loadFromFile(resourcePath() + filename);
 #endif
 		return texture;
 	}
