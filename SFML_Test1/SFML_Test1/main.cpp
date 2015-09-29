@@ -14,7 +14,7 @@ Game_State game_state;
 
 /*Functions*/
 void PlayIntro(sf::RenderWindow*);	//play introduction animation
-void renderingThread(sf::RenderWindow*, Menu*);
+void renderingThread(sf::RenderWindow*, std::shared_ptr<Menu>);
 /*~~~~~~~~~*/
 
 int main()
@@ -35,11 +35,11 @@ int main()
 	GameData gameData;
 
 	//pointer to the menu and the game
-	Menu game_menu;
+	std::shared_ptr<Menu> game_menu(new Menu);
 	//TheGame *game_thegame;
 
 	// launch the rendering thread
-	std::thread thread(&renderingThread, &window, &game_menu);
+	std::thread thread(&renderingThread, &window, game_menu);
 
 	// the event loop
 	while (window.isOpen())
@@ -66,7 +66,7 @@ int main()
 				else if (game_state == menu)
 				{
 					//call menu's mouse update function
-					game_menu.Mouse_moved_update(mouseposition);
+					game_menu->Mouse_moved_update(mouseposition);
 				}
 				//if the game state is game
 				else if (game_state == game)
@@ -89,10 +89,10 @@ int main()
 				else if (game_state == menu)
 				{
 					//call menu's mouse clicked update function
-					game_menu.Mouse_clicked_update(mouseposition);
+					game_menu->Mouse_clicked_update(mouseposition);
 
 					//if menu is terminated, close the window
-					if (game_menu.getState() == terminated)
+					if (game_menu->getState() == terminated)
 					{
 						window.close();
 					}
@@ -113,7 +113,7 @@ int main()
 				}
 				else if (game_state == menu)
 				{
-					game_menu.KeyBoard_Press_update(static_cast<char>(event.text.unicode));
+					game_menu->KeyBoard_Press_update(static_cast<char>(event.text.unicode));
 				}
 				else if (game_state == game)
 				{
@@ -177,7 +177,7 @@ void PlayIntro(sf::RenderWindow *window)
 }
 
 //renderingThread
-void renderingThread(sf::RenderWindow* window, Menu *ptrmenu)
+void renderingThread(sf::RenderWindow* window, std::shared_ptr<Menu> ptrmenu)
 {
 	// the rendering loop
 	while (window->isOpen())
