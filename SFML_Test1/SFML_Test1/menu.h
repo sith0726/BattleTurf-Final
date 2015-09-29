@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include "Button.h"
 #include "gameData.h"
+#include "Network.h"
 
 enum Menu_state{
 	mainmenu = 1,

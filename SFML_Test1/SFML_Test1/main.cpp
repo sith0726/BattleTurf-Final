@@ -34,6 +34,9 @@ int main()
 	//declare game data
 	GameData gameData;
 
+	//declare networkManager
+	NetworkManager networkmanager;
+
 	//pointer to the menu and the game
 	std::shared_ptr<Menu> game_menu(new Menu);
 	//TheGame *game_thegame;
@@ -206,7 +209,6 @@ void renderingThread(sf::RenderWindow* window, std::shared_ptr<Menu> ptrmenu)
 		else if (game_state == Game_State::game)
 		{
 			// draw...
-
 
 		}
 		// end the current frame
