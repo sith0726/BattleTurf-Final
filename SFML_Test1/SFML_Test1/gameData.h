@@ -2,6 +2,8 @@
 #define GAMEDATA_H
 
 #include "AssetManager.h" //resource manager
+#include <vector>
+#include <memory>
 
 class GameData
 {

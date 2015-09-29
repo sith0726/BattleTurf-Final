@@ -19,9 +19,6 @@ void renderingThread(sf::RenderWindow*, Menu*);
 
 int main()
 {
-#ifdef __Apple__
-	std::cout << "Hello window!" << std::endl;
-#endif
 	// create the window (remember: it's safer to create it in the main thread due to OS limitations)
 	sf::RenderWindow window(sf::VideoMode(600, 600), "Test", sf::Style::Close);
 
@@ -108,7 +105,7 @@ int main()
 			}	
 
 			//if keyboard pressed
-			if (event.type == sf::Event::KeyPressed)
+			if (event.type == sf::Event::TextEntered)
 			{
 				if (game_state == intro)
 				{
@@ -116,7 +113,7 @@ int main()
 				}
 				else if (game_state == menu)
 				{
-					//game_menu.KeyBoard_Press_update();
+					game_menu.KeyBoard_Press_update(static_cast<char>(event.text.unicode));
 				}
 				else if (game_state == game)
 				{

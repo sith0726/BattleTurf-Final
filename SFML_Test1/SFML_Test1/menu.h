@@ -32,7 +32,6 @@ private:
 	Button clientHostNextButton;
 
 	//client text:enter IP
-	sf::Font font;
 	sf::Text txt_EnterIP;
 	//cllient text: IP
 	sf::Text txt_serverIP;
@@ -41,7 +40,12 @@ private:
 	//IP input box in client
 	sf::RectangleShape IPinputbox;
 
-	void ModifyIP(char key);
+	//texture for lobby
+	sf::RectangleShape PIC_lobby_Playercolor[4];	//showing the player's color
+	Button lobby_Players_state[4];
+	sf::Text PlayerName[4];
+
+	void ModifyIP(const char &key);
 public:
 	//
 	Menu();
@@ -54,5 +58,5 @@ public:
 	//call in mouse-clicked event
 	void Mouse_clicked_update(sf::Vector2i &mouseposition);
 	//call when keyboard pressed
-	//void KeyBoard_Press_update();
+	void KeyBoard_Press_update(const char &input);
 };

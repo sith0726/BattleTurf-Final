@@ -53,19 +53,12 @@ Menu::Menu()
 										  &AssetManager::GetTexture("Texture/button_next_focus_4_1.png"));
 	clientHostNextButton.change_texture_to_normal();
 
-    //font
-    //move this into resource manager!
-#ifdef _WIN32
-    font.loadFromFile("Texture/arial.ttf");
-#elif __MACH__
-    font.loadFromFile(resourcePath() + "Texture/arial.ttf");
-#endif
 	//EnterIP String
 	txt_EnterIP.setCharacterSize(40);
 	txt_EnterIP.setPosition(sf::Vector2f(150, 325));
 	txt_EnterIP.setString("Enter IP:");
 	txt_EnterIP.setColor(sf::Color::Black);
-    txt_EnterIP.setFont(font);
+    txt_EnterIP.setFont(AssetManager::GetFont("Texture/arial.ttf"));
 
 	//IP input box in client
 	IPinputbox.setPosition(sf::Vector2f(150, 400));
@@ -78,8 +71,71 @@ Menu::Menu()
 	txt_serverIP.setPosition(sf::Vector2f(150, 400));
 	txt_serverIP.setCharacterSize(40);
 	txt_serverIP.setColor(sf::Color::Black);
-	txt_serverIP.setFont(font);
+	txt_serverIP.setFont(AssetManager::GetFont("Texture/arial.ttf"));
+
+	//lobby player's color
+	PIC_lobby_Playercolor[0].setPosition(sf::Vector2f(150, 300));
+	PIC_lobby_Playercolor[0].setTexture(&AssetManager::GetTexture("Texture/box_blue_1_22.png"));
+	PIC_lobby_Playercolor[0].setSize(sf::Vector2f(50, 50));
+
+	PIC_lobby_Playercolor[1].setPosition(sf::Vector2f(150, 350));
+	PIC_lobby_Playercolor[1].setTexture(&AssetManager::GetTexture("Texture/box_red_1_22.png"));
+	PIC_lobby_Playercolor[1].setSize(sf::Vector2f(50, 50));
+
+	PIC_lobby_Playercolor[2].setPosition(sf::Vector2f(150, 400));
+	PIC_lobby_Playercolor[2].setTexture(&AssetManager::GetTexture("Texture/box_green_1_22.png"));
+	PIC_lobby_Playercolor[2].setSize(sf::Vector2f(50, 50));
+
+	PIC_lobby_Playercolor[3].setPosition(sf::Vector2f(150, 450));
+	PIC_lobby_Playercolor[3].setTexture(&AssetManager::GetTexture("Texture/box_yellow_1_22.png"));
+	PIC_lobby_Playercolor[3].setSize(sf::Vector2f(50, 50));
 	
+	//lobby player's state
+	lobby_Players_state[0].setPosition(sf::Vector2f(200, 300));
+	lobby_Players_state[0].setSize(sf::Vector2f(250, 50));
+	lobby_Players_state[0].setOutlineThickness(2);
+	lobby_Players_state[0].setOutlineColor(sf::Color::Black);
+
+	lobby_Players_state[1].setPosition(sf::Vector2f(200, 350));
+	lobby_Players_state[1].setSize(sf::Vector2f(250, 50));
+	lobby_Players_state[1].setOutlineThickness(2);
+	lobby_Players_state[1].setOutlineColor(sf::Color::Black);
+
+	lobby_Players_state[2].setPosition(sf::Vector2f(200, 400));
+	lobby_Players_state[2].setSize(sf::Vector2f(250, 50));
+	lobby_Players_state[2].setOutlineThickness(2);
+	lobby_Players_state[2].setOutlineColor(sf::Color::Black);
+
+	lobby_Players_state[3].setPosition(sf::Vector2f(200, 450));
+	lobby_Players_state[3].setSize(sf::Vector2f(250, 50));
+	lobby_Players_state[3].setOutlineThickness(2);
+	lobby_Players_state[3].setOutlineColor(sf::Color::Black);
+
+	//Player's name
+	PlayerName[0].setPosition(sf::Vector2f(200, 290));
+	PlayerName[0].setCharacterSize(50);
+	PlayerName[0].setString("Player1");
+	PlayerName[0].setFont(AssetManager::GetFont("Texture/arial.ttf"));
+	PlayerName[0].setColor(sf::Color::Black);
+
+	PlayerName[1].setPosition(sf::Vector2f(200, 340));
+	PlayerName[1].setCharacterSize(50);
+	PlayerName[1].setString("Player2");
+	PlayerName[1].setFont(AssetManager::GetFont("Texture/arial.ttf"));
+	PlayerName[1].setColor(sf::Color::Black);
+
+	PlayerName[2].setPosition(sf::Vector2f(200, 390));
+	PlayerName[2].setCharacterSize(50);
+	PlayerName[2].setString("Player3");
+	PlayerName[2].setFont(AssetManager::GetFont("Texture/arial.ttf"));
+	PlayerName[2].setColor(sf::Color::Black);
+
+	PlayerName[3].setPosition(sf::Vector2f(200, 440));
+	PlayerName[3].setCharacterSize(50);
+	PlayerName[3].setString("Player4");
+	PlayerName[3].setFont(AssetManager::GetFont("Texture/arial.ttf"));
+	PlayerName[3].setColor(sf::Color::Black);
+
 }
 
 void Menu::Graphic_update(sf::RenderWindow *window)
@@ -112,7 +168,21 @@ void Menu::Graphic_update(sf::RenderWindow *window)
 	//in host
 	else if (menu_state == multiplayer_lobby_host)
 	{
-		
+		window->draw(gameTitle);
+		window->draw(clientHostBackButton);
+		window->draw(clientHostNextButton);
+		window->draw(PIC_lobby_Playercolor[0]);
+		window->draw(PIC_lobby_Playercolor[1]);
+		window->draw(PIC_lobby_Playercolor[2]);
+		window->draw(PIC_lobby_Playercolor[3]);
+		window->draw(lobby_Players_state[0]);
+		window->draw(lobby_Players_state[1]);
+		window->draw(lobby_Players_state[2]);
+		window->draw(lobby_Players_state[3]);
+		window->draw(PlayerName[0]);
+		window->draw(PlayerName[1]);
+		window->draw(PlayerName[2]);
+		window->draw(PlayerName[3]);
 	}
 
 }
@@ -197,6 +267,27 @@ void Menu::Mouse_moved_update(sf::Vector2i &mouseposition)
 			clientHostNextButton.change_texture_to_normal();
 		}
 	}
+	//in host
+	else if (menu_state == multiplayer_lobby_host)
+	{
+		if (clientHostBackButton.isCursor_on_button(mouseposition))
+		{
+			clientHostBackButton.change_texture_to_focus();
+		}
+		else
+		{
+			clientHostBackButton.change_texture_to_normal();
+		}
+
+		if (clientHostNextButton.isCursor_on_button(mouseposition))
+		{
+			clientHostNextButton.change_texture_to_focus();
+		}
+		else
+		{
+			clientHostNextButton.change_texture_to_normal();
+		}
+	}
 }
 //call when mouse clicked on something...
 void Menu::Mouse_clicked_update(sf::Vector2i &mouseposition)
@@ -248,25 +339,42 @@ void Menu::Mouse_clicked_update(sf::Vector2i &mouseposition)
 			//try connent...
 		}
 	}
+	//in host
+	else if (menu_state == multiplayer_lobby_host)
+	{
+		//if the mouse is on the back, change the menu_state to setting1
+		if (clientHostBackButton.isCursor_on_button(mouseposition))
+		{
+			//if there are players in the lobby, notify them
+
+			//go back to menu setting1
+			menu_state = setting1;
+		}
+		//if the mouse is on the next...
+		else if (clientHostNextButton.isCursor_on_button(mouseposition))
+		{
+			//if players are ready, pass the data to game class and start the game.
+		}
+	}
 }
-/*//KeyBoard pressed
-void Menu::KeyBoard_Press_update()
+//KeyBoard pressed
+void Menu::KeyBoard_Press_update(const char &input)
 {
 	if (menu_state == multiplayer_client)
 	{
-		ModifyIP(key);
+		ModifyIP(input);
 	}
 }
 
 //Modify IP in client phase
-void Menu::ModifyIP(char key)
+void Menu::ModifyIP(const char &key)
 {
 	if (serverIP.getSize() < 15)
 	{
 		//if it is 0~9
 		if (key >= 48 && key <= 57)
 		{
-			serverIP += static_cast<char>(key);
+			serverIP += key;
 		}
 
 		//if it is period '.'
@@ -284,4 +392,3 @@ void Menu::ModifyIP(char key)
 	//update the text
 	txt_serverIP.setString(serverIP);
 }
-*/

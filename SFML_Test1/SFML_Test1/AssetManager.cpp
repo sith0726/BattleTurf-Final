@@ -37,3 +37,25 @@ sf::Texture& AssetManager::GetTexture(std::string const& filename)
 		return texture;
 	}
 }
+
+sf::Font& AssetManager::GetFont(std::string const& filename)
+{
+	auto& FontMap = sInstance->m_Font;
+
+	auto pairFound = FontMap.find(filename);
+	if (pairFound != FontMap.end())
+	{
+		return pairFound->second;
+	}
+	else
+	{
+		auto& font = FontMap[filename];
+
+#ifdef _WIN32
+		font.loadFromFile(filename);
+#elif __MACH__
+		font.loadFromFile(resourcePath() + filename);
+#endif
+		return font;
+	}
+}
