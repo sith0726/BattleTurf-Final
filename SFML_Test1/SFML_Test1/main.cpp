@@ -8,6 +8,7 @@
 #include "gameData.h"	//game data class
 #include "menu.h"		//menu class
 
+
 //declare the game state
 enum Game_State{intro, menu, game};
 Game_State game_state;
@@ -15,6 +16,7 @@ Game_State game_state;
 /*Functions*/
 void PlayIntro(sf::RenderWindow*);	//play introduction animation
 void renderingThread(sf::RenderWindow*, std::shared_ptr<Menu>);
+void networkThread(sf::RenderWindow*, std::shared_ptr<NetworkManager>);
 /*~~~~~~~~~*/
 
 int main()
@@ -35,14 +37,17 @@ int main()
 	GameData gameData;
 
 	//declare networkManager
-	NetworkManager networkmanager;
+	std::shared_ptr<NetworkManager> networkmanager(new NetworkManager);
 
 	//pointer to the menu and the game
 	std::shared_ptr<Menu> game_menu(new Menu);
+	game_menu->setNetworkManagerPtr(networkmanager);
 	//TheGame *game_thegame;
 
 	// launch the rendering thread
 	std::thread thread(&renderingThread, &window, game_menu);
+	// launch the networking thread
+	std::thread thread1(&networkThread, &window, networkmanager);
 
 	// the event loop
 	while (window.isOpen())
@@ -126,6 +131,7 @@ int main()
 		}
 	}
 	thread.join();
+	thread1.join();
 	return 0;
 }
 //PlayIntro
@@ -213,5 +219,17 @@ void renderingThread(sf::RenderWindow* window, std::shared_ptr<Menu> ptrmenu)
 		}
 		// end the current frame
 		window->display();
+	}
+}
+
+//networking thread
+void networkThread(sf::RenderWindow *window, std::shared_ptr<NetworkManager> networkmanager)
+{
+	while (window->isOpen())
+	{
+		if (networkmanager->isListening())
+		{
+			networkmanager->EventHandle();
+		}
 	}
 }

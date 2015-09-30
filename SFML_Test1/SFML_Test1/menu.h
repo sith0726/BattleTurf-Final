@@ -1,7 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include "Button.h"
 #include "gameData.h"
-#include "Network.h"
+#include "NetworkManager.h"	//for networking, need gameData class
 
 enum Menu_state{
 	mainmenu = 1,
@@ -17,7 +17,6 @@ class Menu
 private:
 	Menu_state menu_state;
 	//Graphics
-
 	sf::Texture gameTitle_Texture;
 	sf::RectangleShape gameTitle;
 	//main menu
@@ -46,6 +45,8 @@ private:
 	Button lobby_Players_state[4];
 	sf::Text PlayerName[4];
 
+	//pointer to networkmanager
+	std::shared_ptr<NetworkManager> ptrNetworkManager;
 	void ModifyIP(const char &key);
 public:
 	//
@@ -60,4 +61,6 @@ public:
 	void Mouse_clicked_update(sf::Vector2i &mouseposition);
 	//call when keyboard pressed
 	void KeyBoard_Press_update(const char &input);
+	//get ptr to NetworkManager
+	void setNetworkManagerPtr(const std::shared_ptr<NetworkManager> &copied_ptr);
 };

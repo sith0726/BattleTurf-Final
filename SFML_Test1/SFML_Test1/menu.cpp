@@ -138,6 +138,11 @@ Menu::Menu()
 
 }
 
+void Menu::setNetworkManagerPtr(const std::shared_ptr<NetworkManager> &copied_ptr)
+{
+	ptrNetworkManager = copied_ptr;
+}
+
 void Menu::Graphic_update(sf::RenderWindow *window)
 {
 	//in main menu, show the background, gameTitle, start and exit button.
@@ -312,6 +317,9 @@ void Menu::Mouse_clicked_update(sf::Vector2i &mouseposition)
 		//if the mouse is on the host, change the menu_state to multiplayer_lobby_host
 		if (hostButton.isCursor_on_button(mouseposition))
 		{
+			//starting listening the socket
+			ptrNetworkManager->Menu_startListening();
+			//change menu state to lobby
 			menu_state = multiplayer_lobby_host;
 		}
 		//if the mouse is on the client, change the menu_state to multiplayer_client
@@ -336,7 +344,8 @@ void Menu::Mouse_clicked_update(sf::Vector2i &mouseposition)
 		//if the mouse is on the next, try connection.
 		else if (clientHostNextButton.isCursor_on_button(mouseposition))
 		{
-			//try connent...
+			//try connect...
+			ptrNetworkManager->Menu_tryConnect(serverIP);
 		}
 	}
 	//in host
