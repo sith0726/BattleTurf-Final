@@ -4,7 +4,7 @@ NetworkManager::NetworkManager()
 {
 	//set blocking to false
 	listener.setBlocking(false);
-	tcpsocket.setBlocking(false);
+	//tcpsocket.setBlocking(false);
 	listener.listen(8310);
 	
 	bool_isListening = false;
@@ -29,32 +29,15 @@ void NetworkManager::EventHandle()
             if (listener.accept(tcpsocket) == sf::Socket::Done)
             {
                 std::cout << "New connection from" << tcpsocket.getRemoteAddress() << std::endl;
-                //send the lobby data to user
-                //...
-                
+                //send the lobby information
+				_Menu_InjectLobbyInfo(packet);
+				tcpsocket.send(packet);
             }
         }
         //else, it is a client
         else
         {
-            //if the socket receive something...
-            switch (tcpsocket.receive(packet))
-            {
-                //in case of success, call decoder.
-                case sf::Socket::Done : //decode...
-                                        break;
-                //in case of broken data, request the server to send again.
-                case sf::Socket::Partial : //send again...
-                                        break;
-                //if the server shut down or something...
-                case sf::Socket::Disconnected : //disconnected...
-                                        break;
-                //in case of error,
-                case sf::Socket::Error : //error...
-                                        break;
-                //in case of notready, do nothing
-                case sf::Socket::NotReady : ;
-            }
+
         }
     }
 }
@@ -77,10 +60,13 @@ void NetworkManager::Menu_tryConnect(const sf::String &ip)
 {
 	sf::IpAddress ipAdress(ip);
 	
-	if (tcpsocket.connect(ipAdress, 8310) == sf::Socket::Done)
+	if (tcpsocket.connect(ipAdress, 8310, sf::seconds(4)) == sf::Socket::Done)
 	{
 		std::cout << "connect success." << std::endl;
-        //start listening...only accept the server ip
+		//receive lobby's information.
+		tcpsocket.receive(packet);
+		_Menu_DecodeLobbyInfo(packet);
+
         bool_isListening = true;
 	}
 	else
@@ -88,3 +74,17 @@ void NetworkManager::Menu_tryConnect(const sf::String &ip)
 		std::cout << "cannot connect to the server." << std::endl;
 	}
 }
+
+void NetworkManager::_Menu_InjectLobbyInfo(sf::Packet& packet)
+{
+	sf::String test("hello! Welcome to our Battle Turf server!");
+	packet << test;
+}
+
+void NetworkManager::_Menu_DecodeLobbyInfo(sf::Packet& packet)
+{
+	sf::String test;
+	packet >> test;
+	std::cout << test.toAnsiString() << std::endl;
+}
+
