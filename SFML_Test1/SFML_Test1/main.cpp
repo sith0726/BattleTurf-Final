@@ -9,13 +9,9 @@
 #include "menu.h"		//menu class
 
 
-//declare the game state
-enum Game_State{intro, menu, game};
-Game_State game_state;
-
 /*Functions*/
 void PlayIntro(sf::RenderWindow*);	//play introduction animation
-void renderingThread(sf::RenderWindow*, std::shared_ptr<Menu>);
+void renderingThread(sf::RenderWindow*, std::shared_ptr<Menu>, std::shared_ptr<GameData>);
 void networkThread(sf::RenderWindow*, std::shared_ptr<NetworkManager>);
 /*~~~~~~~~~*/
 
@@ -30,11 +26,8 @@ int main()
 	// deactivate its OpenGL context
 	window.setActive(false);
 
-	//declare game state, starting with introduction.
-	game_state = Game_State::intro;
-
 	//declare game data
-	GameData gameData;
+    std::shared_ptr<GameData> gameData(new GameData);
 
 	//declare networkManager
 	std::shared_ptr<NetworkManager> networkmanager(new NetworkManager);
@@ -45,7 +38,7 @@ int main()
 	//TheGame *game_thegame;
 
 	// launch the rendering thread
-	std::thread thread(&renderingThread, &window, game_menu);
+	std::thread thread(&renderingThread, &window, game_menu, gameData);
 	// launch the networking thread
 	std::thread thread1(&networkThread, &window, networkmanager);
 
@@ -66,18 +59,18 @@ int main()
 				//get the position of the mouse (in the window)
 				sf::Vector2i mouseposition = sf::Mouse::getPosition(window);
 				//if the game state is intro
-				if (game_state == intro)
+				if (gameData->getGameState() == intro)
 				{
 					//nothing...
 				}
 				//if the game state is menu
-				else if (game_state == menu)
+				else if (gameData->getGameState() == menu)
 				{
 					//call menu's mouse update function
 					game_menu->Mouse_moved_update(mouseposition);
 				}
 				//if the game state is game
-				else if (game_state == game)
+				else if (gameData->getGameState() == game)
 				{
 					//call game's mouse update function
 				}
@@ -89,12 +82,12 @@ int main()
 				//get the position of the mouse (in the window)
 				sf::Vector2i mouseposition = sf::Mouse::getPosition(window);
 				//if the game state is intro
-				if (game_state == intro)
+				if (gameData->getGameState() == intro)
 				{
 					//nothing...
 				}
 				//if the game state is menu
-				else if (game_state == menu)
+				else if (gameData->getGameState() == menu)
 				{
 					//call menu's mouse clicked update function
 					game_menu->Mouse_clicked_update(mouseposition);
@@ -106,7 +99,7 @@ int main()
 					}
 				}
 				//if the game state is game
-				else if (game_state == game)
+				else if (gameData->getGameState() == game)
 				{
 					//call game's mouse clicked update function
 				}
@@ -115,15 +108,15 @@ int main()
 			//if keyboard pressed
 			if (event.type == sf::Event::TextEntered)
 			{
-				if (game_state == intro)
+				if (gameData->getGameState() == intro)
 				{
 					//nothing...
 				}
-				else if (game_state == menu)
+				else if (gameData->getGameState() == menu)
 				{
 					game_menu->KeyBoard_Press_update(static_cast<char>(event.text.unicode));
 				}
-				else if (game_state == game)
+				else if (gameData->getGameState() == game)
 				{
 					//nothing...
 				}
@@ -186,7 +179,7 @@ void PlayIntro(sf::RenderWindow *window)
 }
 
 //renderingThread
-void renderingThread(sf::RenderWindow* window, std::shared_ptr<Menu> ptrmenu)
+void renderingThread(sf::RenderWindow* window, std::shared_ptr<Menu> ptrmenu, std::shared_ptr<GameData> gameData)
 {
 	// the rendering loop
 	while (window->isOpen())
@@ -195,14 +188,14 @@ void renderingThread(sf::RenderWindow* window, std::shared_ptr<Menu> ptrmenu)
 		window->clear(sf::Color::White);
 
 		//if the game state is "intro", play the introduction animation.
-		if (game_state == Game_State::intro)
+		if (gameData->getGameState() == Game_State::intro)
 		{
 			//PlayIntro(window);
 			//when done, swith to menu phase.
-			game_state = menu;
+            gameData->setGameState(Game_State::menu);
 		}
 		//if the game state is "menu", render menu graphics.
-		else if (game_state == Game_State::menu)
+		else if (gameData->getGameState() == Game_State::menu)
 		{
 			// make sure menu exist...
 			if (ptrmenu)
@@ -212,7 +205,7 @@ void renderingThread(sf::RenderWindow* window, std::shared_ptr<Menu> ptrmenu)
 			}		
 		}
 		//if the game state is "game", render the game graphics.
-		else if (game_state == Game_State::game)
+		else if (gameData->getGameState() == Game_State::game)
 		{
 			// draw...
 
@@ -225,11 +218,9 @@ void renderingThread(sf::RenderWindow* window, std::shared_ptr<Menu> ptrmenu)
 //networking thread
 void networkThread(sf::RenderWindow *window, std::shared_ptr<NetworkManager> networkmanager)
 {
+    //the networkHandler only works when window is open
 	while (window->isOpen())
 	{
-		if (networkmanager->isListening())
-		{
-			networkmanager->EventHandle();
-		}
+        networkmanager->EventHandle();
 	}
 }
