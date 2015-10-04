@@ -1,7 +1,7 @@
+
 class Player
 {
-private:
-
 public:
-
+    Player();
+    int score;
 };

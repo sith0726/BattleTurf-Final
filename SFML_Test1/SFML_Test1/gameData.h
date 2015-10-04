@@ -2,7 +2,9 @@
 #define GAMEDATA_H
 
 #include "AssetManager.h" //resource manager
+#include "Player.h"
 #include <vector>
+#include <list>
 #include <memory>
 
 //declare the game state
@@ -15,17 +17,28 @@ private:
 	AssetManager resourceManager;
     //game state
     Game_State game_state;
-public:
-    GameData()
-    {
-        game_state = intro;
-    }
+    //list of players
+    std::list<Player> player;
+    //map
+    //...
     
+public:
+    GameData();
+
     //get the current game state
     Game_State getGameState(){return game_state;}
     
     //set the current game state
     void setGameState(const Game_State &newState){game_state = newState;}
+    
+    //get the number of players
+    int getPlayerNumber(){return player.size();}
+    
+    //insert a player
+    void InsertPlayer(Player&);
+    
+    //remove a player
+    void RemovePlayer(const int&);
     
 };
 

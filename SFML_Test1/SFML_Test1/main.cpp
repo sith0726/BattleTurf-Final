@@ -7,11 +7,12 @@
 #include <iostream>		//debug message
 #include "gameData.h"	//game data class
 #include "menu.h"		//menu class
+#include "Game.h"       //game class
 
 
 /*Functions*/
 void PlayIntro(sf::RenderWindow*);	//play introduction animation
-void renderingThread(sf::RenderWindow*, std::shared_ptr<Menu>, std::shared_ptr<GameData>);
+void renderingThread(sf::RenderWindow*, std::shared_ptr<Menu>, std::shared_ptr<TheGame>, std::shared_ptr<GameData>);
 void networkThread(sf::RenderWindow*, std::shared_ptr<NetworkManager>);
 /*~~~~~~~~~*/
 
@@ -30,15 +31,14 @@ int main()
     std::shared_ptr<GameData> gameData(new GameData);
 
 	//declare networkManager
-	std::shared_ptr<NetworkManager> networkmanager(new NetworkManager);
+	std::shared_ptr<NetworkManager> networkmanager(new NetworkManager(gameData));
 
 	//pointer to the menu and the game
-	std::shared_ptr<Menu> game_menu(new Menu);
-	game_menu->setNetworkManagerPtr(networkmanager);
-	//TheGame *game_thegame;
+	std::shared_ptr<Menu> game_menu(new Menu(networkmanager, gameData));
+    std::shared_ptr<TheGame> myGame(new TheGame(networkmanager, gameData));
 
 	// launch the rendering thread
-	std::thread thread(&renderingThread, &window, game_menu, gameData);
+	std::thread thread(&renderingThread, &window, game_menu, myGame, gameData);
 	// launch the networking thread
 	std::thread thread1(&networkThread, &window, networkmanager);
 
@@ -179,7 +179,7 @@ void PlayIntro(sf::RenderWindow *window)
 }
 
 //renderingThread
-void renderingThread(sf::RenderWindow* window, std::shared_ptr<Menu> ptrmenu, std::shared_ptr<GameData> gameData)
+void renderingThread(sf::RenderWindow* window, std::shared_ptr<Menu> ptrmenu, std::shared_ptr<TheGame> myGame, std::shared_ptr<GameData> gameData)
 {
 	// the rendering loop
 	while (window->isOpen())
