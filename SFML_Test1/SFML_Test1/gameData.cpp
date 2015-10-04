@@ -19,8 +19,18 @@ void GameData::InsertPlayer(Player& newPlayer)
     }
 }
 
+void GameData::RebuildPlayer(const int& num)
+{
+	player.clear();
+	for (int i = 0; i < num; i++)
+	{
+		Player player;
+		InsertPlayer(player);
+	}
+}
+
 void GameData::RemovePlayer(const int& index)
 {
     //remove that player from the list(for networking, remember to disconnect the socket.)
-    //...
+	player.pop_back();
 }

@@ -5,6 +5,36 @@
 #include <vector>
 #include "gameData.h"
 
+/*define the content of the packet
+Lobby_info = update the lobby's information
+client_OK  = client is ready for the game
+Game_start = the game starts, send the map settings, player's order...
+Game_update = update the currnet map, player's order...
+Game_currentbox = update other players location
+Disconnect_request = a client tries to desconnect from server
+ShutDown_warning = the server is shutting down.
+*/
+enum PacketInfo{Lobby_info,Disconnect_request};
+
+//overlad the operator <<
+template <typename Enum>
+typename std::enable_if<std::is_enum<Enum>::value, sf::Packet&>::type
+operator<< (sf::Packet& packet, Enum t)
+{
+	return packet << static_cast<typename std::underlying_type<Enum>::type>(t);
+}
+
+//overload the operator >>
+template <typename Enum>
+typename std::enable_if<std::is_enum<Enum>::value, sf::Packet&>::type
+operator>> (sf::Packet& packet, Enum& t)
+{
+	typename std::underlying_type<Enum>::type i;
+	packet >> i;
+	t = static_cast<Enum>(i);
+	return packet;
+}
+
 class NetworkManager
 {
 private:

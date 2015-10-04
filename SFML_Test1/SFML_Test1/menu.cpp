@@ -413,7 +413,7 @@ void Menu::Mouse_clicked_update(sf::Vector2i &mouseposition)
 		if (clientHostBackButton.isCursor_on_button(mouseposition))
 		{
 			//disconnect...
-
+			ptrNetworkManager->Menu_disconnect();
 			//go back to menu setting1
 			menu_state = setting1;
 		}

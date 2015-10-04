@@ -19,6 +19,10 @@ private:
     Game_State game_state;
     //list of players
     std::list<Player> player;
+
+	//index of this player
+	int thisplayer;
+
     //map
     //...
     
@@ -36,9 +40,12 @@ public:
     
     //insert a player
     void InsertPlayer(Player&);
+
+	//Rebuild the list, for client only
+	void RebuildPlayer(const int& num);
     
     //remove a player
-    void RemovePlayer(const int&);
+    void RemovePlayer(const int& index);
     
 };
 

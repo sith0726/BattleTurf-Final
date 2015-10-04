@@ -31,12 +31,10 @@ void NetworkManager::EventHandle()
         //if it is a server
         if(bool_isServer == true)
         {
-			//if a player disconnect, remove it
-
             //if there is a connection request and the lobby is not full, accept it
             if (listener.accept(tcpsocket) == sf::Socket::Done && ptrData->getPlayerNumber() < 4)
             {
-                std::cout << "New connection from" << tcpsocket.getRemoteAddress() << std::endl;
+                std::cout << "New connection from" << tcpsocket.getRemoteAddress() << " " << std::endl;
                 
 				//add one player to the data
 				Player newPlayer;
@@ -46,6 +44,18 @@ void NetworkManager::EventHandle()
 				_Menu_InjectLobbyInfo(packet);
 				tcpsocket.send(packet);
             }
+
+			
+			if (tcpsocket.receive(packet) == sf::Socket::Done)
+			{
+				PacketInfo info;
+				packet >> info;
+				//if the player disconnect, remove it
+				if (info == PacketInfo::Disconnect_request)
+				{
+					ptrData->RemovePlayer(ptrData->getPlayerNumber());
+				}
+			}
         }
         //else, it is a client
         else
@@ -106,27 +116,33 @@ bool NetworkManager::Menu_tryConnect(const sf::String &ip)
 
 void NetworkManager::_Menu_InjectLobbyInfo(sf::Packet& packet)
 {
-	sf::String test("hello! Welcome to Battle Turf server!");
     int playercount = ptrData->getPlayerNumber();  //get the player number
+	packet << PacketInfo::Lobby_info << playercount;
 }
 
 void NetworkManager::_Menu_DecodeLobbyInfo(sf::Packet& packet)
 {
-	sf::String test;
-    int playercount;
-	packet >> test;
-	std::cout << test.toAnsiString() << std::endl;
-	packet >> playercount;
-	std::cout << "There are " << playercount << "Players." << std::endl;
-	//update players
-	//temporary...remove this after test
-	Player samplePlayer;
-	ptrData->InsertPlayer(samplePlayer);
-	//temporary...
+	PacketInfo info;
+	packet >> info;
+	if (info == PacketInfo::Lobby_info)
+	{
+		int playercount;
+		packet >> playercount;
+		std::cout << "There are " << playercount << "Players." << std::endl;
+		//rebuild the player list
+		ptrData->RebuildPlayer(playercount);
+	}
+	else
+	{
+		std::cout << "Error when receiving lobby information." << std::endl;
+	}
+
 }
 
 void NetworkManager::Menu_disconnect()
 {
+	packet << PacketInfo::Disconnect_request;
+	tcpsocket.send(packet);
 	tcpsocket.disconnect();
 }
 
