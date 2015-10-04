@@ -70,6 +70,8 @@
     <ClCompile Include="AssetManager.cpp" />
     <ClCompile Include="box.cpp" />
     <ClCompile Include="Button.cpp" />
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="gameData.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="menu.cpp" />
     <ClCompile Include="NetworkManager.cpp" />
@@ -79,6 +81,7 @@
     <ClInclude Include="AssetManager.h" />
     <ClInclude Include="box.h" />
     <ClInclude Include="Button.h" />
+    <ClInclude Include="Game.h" />
     <ClInclude Include="gameData.h" />
     <ClInclude Include="menu.h" />
     <ClInclude Include="NetworkManager.h" />

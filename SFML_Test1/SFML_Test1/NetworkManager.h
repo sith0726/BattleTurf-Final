@@ -12,7 +12,7 @@ private:
     //std::list<sf::TcpSocket> tcpsocket;
     sf::TcpSocket tcpsocket;
 	bool bool_isAvailable;
-    bool bool_isServer;  // true = server, false client.
+    bool bool_isServer;  // true = server, false = client.
     sf::Packet packet;  //SFML packet for sending data
     
     std::shared_ptr<GameData> ptrData;  //pointer to game data
@@ -30,7 +30,8 @@ public:
 	
 	void Menu_startListening();
     void Menu_stopListening();
-	void Menu_tryConnect(const sf::String &);
+	bool Menu_tryConnect(const sf::String &);
+	void Menu_disconnect();
 	
 
 	//is the program listening?

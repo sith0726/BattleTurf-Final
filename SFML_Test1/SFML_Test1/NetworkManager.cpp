@@ -31,17 +31,20 @@ void NetworkManager::EventHandle()
         //if it is a server
         if(bool_isServer == true)
         {
+			//if a player disconnect, remove it
+
             //if there is a connection request and the lobby is not full, accept it
             if (listener.accept(tcpsocket) == sf::Socket::Done && ptrData->getPlayerNumber() < 4)
             {
                 std::cout << "New connection from" << tcpsocket.getRemoteAddress() << std::endl;
                 
+				//add one player to the data
+				Player newPlayer;
+				ptrData->InsertPlayer(newPlayer);
+
                 //send the lobby information
 				_Menu_InjectLobbyInfo(packet);
 				tcpsocket.send(packet);
-                //add one player to the data
-                Player newPlayer;
-                ptrData->InsertPlayer(newPlayer);
             }
         }
         //else, it is a client
@@ -72,12 +75,12 @@ void NetworkManager::Menu_stopListening()
     bool_isAvailable = false;
 }
 
-void NetworkManager::Menu_tryConnect(const sf::String &ip)
+bool NetworkManager::Menu_tryConnect(const sf::String &ip)
 {
     //if ip string is empty, nothing happen
     if (ip.isEmpty())
     {
-        return;
+		return false;
     }
     
     //declare an ip address
@@ -92,25 +95,38 @@ void NetworkManager::Menu_tryConnect(const sf::String &ip)
 		_Menu_DecodeLobbyInfo(packet);
 
         bool_isAvailable = true;
+		return true;
 	}
 	else
 	{
 		std::cout << "cannot connect to the server." << std::endl;
+		return false;
 	}
 }
 
 void NetworkManager::_Menu_InjectLobbyInfo(sf::Packet& packet)
 {
-	sf::String test("hello! Welcome to our Battle Turf server!");
-    sf::Int8 playercount = ptrData->getPlayerNumber();  //get the player number
-	packet << test << playercount;
+	sf::String test("hello! Welcome to Battle Turf server!");
+    int playercount = ptrData->getPlayerNumber();  //get the player number
 }
 
 void NetworkManager::_Menu_DecodeLobbyInfo(sf::Packet& packet)
 {
 	sf::String test;
-    sf::Int8 playercount;
-	packet >> test >> playercount;
-	std::cout << test.toAnsiString() << playercount << std::endl;
+    int playercount;
+	packet >> test;
+	std::cout << test.toAnsiString() << std::endl;
+	packet >> playercount;
+	std::cout << "There are " << playercount << "Players." << std::endl;
+	//update players
+	//temporary...remove this after test
+	Player samplePlayer;
+	ptrData->InsertPlayer(samplePlayer);
+	//temporary...
+}
+
+void NetworkManager::Menu_disconnect()
+{
+	tcpsocket.disconnect();
 }
 

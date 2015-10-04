@@ -189,7 +189,24 @@ void Menu::Graphic_update(sf::RenderWindow *window)
             window->draw(PlayerName[i]);
         }
 	}
-
+	//in client lobby
+	else if (menu_state == multiplayer_lobby_client)
+	{
+		window->draw(gameTitle);
+		window->draw(clientHostBackButton);
+		//do not show the next button unless it has more than 2 players
+		if (ptrGameData->getPlayerNumber() > 1)
+		{
+			window->draw(clientHostNextButton);
+		}
+		//show player info
+		for (int i = 0; i < ptrGameData->getPlayerNumber(); i++)
+		{
+			window->draw(PIC_lobby_Playercolor[i]);
+			window->draw(lobby_Players_state[i]);
+			window->draw(PlayerName[i]);
+		}
+	}
 }
 //call when mouse move...
 void Menu::Mouse_moved_update(sf::Vector2i &mouseposition)
@@ -293,6 +310,27 @@ void Menu::Mouse_moved_update(sf::Vector2i &mouseposition)
 			clientHostNextButton.change_texture_to_normal();
 		}
 	}
+	//in client lobby
+	else if (menu_state == multiplayer_lobby_client)
+	{
+		if (clientHostBackButton.isCursor_on_button(mouseposition))
+		{
+			clientHostBackButton.change_texture_to_focus();
+		}
+		else
+		{
+			clientHostBackButton.change_texture_to_normal();
+		}
+
+		if (clientHostNextButton.isCursor_on_button(mouseposition))
+		{
+			clientHostNextButton.change_texture_to_focus();
+		}
+		else
+		{
+			clientHostNextButton.change_texture_to_normal();
+		}
+	}
 }
 //call when mouse clicked on something...
 void Menu::Mouse_clicked_update(sf::Vector2i &mouseposition)
@@ -344,8 +382,11 @@ void Menu::Mouse_clicked_update(sf::Vector2i &mouseposition)
 		//if the mouse is on the next, try connection.
 		else if (clientHostNextButton.isCursor_on_button(mouseposition))
 		{
-			//try connect...
-			ptrNetworkManager->Menu_tryConnect(serverIP);
+			//try connect...if success, change menu state to multiplayer_lobby_clinet
+			if (ptrNetworkManager->Menu_tryConnect(serverIP))
+			{
+				menu_state = multiplayer_lobby_client;
+			}
 		}
 	}
 	//in host
@@ -363,6 +404,24 @@ void Menu::Mouse_clicked_update(sf::Vector2i &mouseposition)
 		else if (clientHostNextButton.isCursor_on_button(mouseposition) && ptrGameData->getPlayerNumber() > 1)
 		{
 			//if players are ready, pass the data to game class and start the game.
+		}
+	}
+	//in client lobby
+	else if(menu_state == multiplayer_lobby_client)
+	{
+		//if the mouse is on the back, change the menu_state to setting1
+		if (clientHostBackButton.isCursor_on_button(mouseposition))
+		{
+			//disconnect...
+
+			//go back to menu setting1
+			menu_state = setting1;
+		}
+		//if the mouse is on the next...!!only available when server sent OK signal
+		else if (clientHostNextButton.isCursor_on_button(mouseposition))
+		{
+			//if server sent ok signal
+			//...
 		}
 	}
 }
