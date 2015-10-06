@@ -15,7 +15,6 @@ NetworkManager::NetworkManager(std::shared_ptr<GameData>& ptr)
     bool_isAvailable = false;
     //assume it is client
     bool_isServer = false;
-    
 }
 
 NetworkManager::~NetworkManager()
@@ -36,31 +35,42 @@ void NetworkManager::EventHandle()
             {
                 std::cout << "New connection from" << tcpsocket.getRemoteAddress() << " " << std::endl;
                 
+				//insert the socket into the list
+				tcpsocketlist.push_back(&tcpsocket);
+				
 				//add one player to the data
 				Player newPlayer;
 				ptrData->InsertPlayer(newPlayer);
 
                 //send the lobby information
-				_Menu_InjectLobbyInfo(packet);
-				tcpsocket.send(packet);
+				int playerindex_forPacket = 1;
+				for (sf::TcpSocket* socket : tcpsocketlist)
+				{
+					_Menu_SendLobbyInfo(socket, playerindex_forPacket);
+					playerindex_forPacket++;
+				}
+				
             }
 
-			
-			if (tcpsocket.receive(packet) == sf::Socket::Done)
+			//for each socket in the list, check the status
+			for (sf::TcpSocket* socket : tcpsocketlist)
 			{
-				PacketInfo info;
-				packet >> info;
-				//if the player disconnect, remove it
-				if (info == PacketInfo::Disconnect_request)
-				{
-					ptrData->RemovePlayer(ptrData->getPlayerNumber());
-				}
+				server_Checksocket(*socket);
 			}
         }
         //else, it is a client
         else
         {
-
+			sf::Packet packet;
+			if (tcpsocket.receive(packet) == sf::Socket::Done)
+			{
+				PacketInfo info;
+				packet >> info;
+				if (info == PacketInfo::Lobby_info)
+				{
+					_Menu_DecodeLobbyInfo(packet);
+				}
+			}
         }
     }
 }
@@ -101,8 +111,9 @@ bool NetworkManager::Menu_tryConnect(const sf::String &ip)
 	{
 		std::cout << "connect success." << std::endl;
 		//receive lobby's information.
-		tcpsocket.receive(packet);
-		_Menu_DecodeLobbyInfo(packet);
+		//sf::Packet packet;
+		//tcpsocket.receive(packet);
+		//_Menu_DecodeLobbyInfo(packet);
 
         bool_isAvailable = true;
 		return true;
@@ -114,35 +125,48 @@ bool NetworkManager::Menu_tryConnect(const sf::String &ip)
 	}
 }
 
-void NetworkManager::_Menu_InjectLobbyInfo(sf::Packet& packet)
+void NetworkManager::_Menu_SendLobbyInfo(sf::TcpSocket* socket, const int& playerindex)
 {
+	sf::Packet packet;
     int playercount = ptrData->getPlayerNumber();  //get the player number
-	packet << PacketInfo::Lobby_info << playercount;
+	packet << PacketInfo::Lobby_info << playercount << playerindex;
+	socket->send(packet);
 }
 
 void NetworkManager::_Menu_DecodeLobbyInfo(sf::Packet& packet)
 {
-	PacketInfo info;
-	packet >> info;
-	if (info == PacketInfo::Lobby_info)
-	{
-		int playercount;
-		packet >> playercount;
-		std::cout << "There are " << playercount << "Players." << std::endl;
-		//rebuild the player list
-		ptrData->RebuildPlayer(playercount);
-	}
-	else
-	{
-		std::cout << "Error when receiving lobby information." << std::endl;
-	}
-
+	int playercount;
+	packet >> playercount;
+	std::cout << "Update : There are " << playercount << "Players." << std::endl;
+	int playerindex;
+	packet >> playerindex;
+	std::cout << "Your index is " << playerindex << std::endl;
+	ptrData->setPlayerindex(playerindex);
+	//rebuild the player list
+	ptrData->RebuildPlayer(playercount);
 }
 
 void NetworkManager::Menu_disconnect()
 {
+	sf::Packet packet;
 	packet << PacketInfo::Disconnect_request;
 	tcpsocket.send(packet);
 	tcpsocket.disconnect();
+}
+
+void NetworkManager::server_Checksocket(sf::TcpSocket& socket)
+{
+	sf::Packet packet;
+	if (socket.receive(packet) == sf::Socket::Done)
+	{
+		PacketInfo info;
+		packet >> info;
+		//if the player disconnect, remove it
+		if (info == PacketInfo::Disconnect_request)
+		{
+			std::cout << "a player has disconnected." << std::endl;
+			ptrData->RebuildPlayer(ptrData->getPlayerNumber() - 1);
+		}
+	}
 }
 

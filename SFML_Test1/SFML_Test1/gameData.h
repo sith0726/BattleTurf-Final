@@ -46,6 +46,12 @@ public:
     
     //remove a player
     void RemovePlayer(const int& index);
+
+	//set player's index
+	void setPlayerindex(const int& num){ thisplayer = num; }
+
+	//get player's index
+	int getPlayerindex(){ return thisplayer; }
     
 };
 
