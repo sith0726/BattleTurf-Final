@@ -52,10 +52,42 @@ void NetworkManager::EventHandle()
 				
             }
 
+			int toberemoved;
+			bool needremoved = false;
 			//for each socket in the list, check the status
 			for (sf::TcpSocket* socket : tcpsocketlist)
 			{
-				server_Checksocket(*socket);
+				//server_Checksocket(*socket);
+				/*
+				The reason of server_Checksocket is disabled is that after the last element of tcpsocketlist is deleted, the iterator of
+				this for loop points to a non-exist socket, causing the program crash.
+				I make up a post-delete method to temporary solve this problem. Problem: if two people disconnect at the same 
+				time, the program may delete one player only. I need a better solution.
+				*/
+				sf::Packet packet;
+				if (socket->receive(packet) == sf::Socket::Done)
+				{
+					PacketInfo info;
+					packet >> info;
+					//if the player disconnect, remove it
+					if (info == PacketInfo::Disconnect_request)
+					{
+						int playerindex;
+						packet >> playerindex;
+						ptrData->RemovePlayer(playerindex);
+						toberemoved = playerindex - 1;
+						needremoved = true;
+
+						std::cout << "a player has disconnected." << std::endl;
+						ptrData->RebuildPlayer(ptrData->getPlayerNumber());
+					}
+				}
+			}
+			if (needremoved)
+			{
+				//remove the socket in the tcpsocketlist
+				tcpsocketlist[toberemoved]->disconnect();
+				tcpsocketlist.erase(tcpsocketlist.begin() + toberemoved);
 			}
         }
         //else, it is a client
@@ -149,24 +181,14 @@ void NetworkManager::_Menu_DecodeLobbyInfo(sf::Packet& packet)
 void NetworkManager::Menu_disconnect()
 {
 	sf::Packet packet;
-	packet << PacketInfo::Disconnect_request;
+	int playerindex = ptrData->getPlayerindex();
+	packet << PacketInfo::Disconnect_request << playerindex;
 	tcpsocket.send(packet);
 	tcpsocket.disconnect();
 }
 
 void NetworkManager::server_Checksocket(sf::TcpSocket& socket)
 {
-	sf::Packet packet;
-	if (socket.receive(packet) == sf::Socket::Done)
-	{
-		PacketInfo info;
-		packet >> info;
-		//if the player disconnect, remove it
-		if (info == PacketInfo::Disconnect_request)
-		{
-			std::cout << "a player has disconnected." << std::endl;
-			ptrData->RebuildPlayer(ptrData->getPlayerNumber() - 1);
-		}
-	}
+
 }
 

@@ -4,6 +4,7 @@
 #include <SFML/Network.hpp>
 #include <algorithm>
 #include <vector>
+#include <deque>
 #include "gameData.h"
 
 /*define the content of the packet
@@ -40,7 +41,7 @@ class NetworkManager
 {
 private:
 	sf::TcpListener listener;
-    std::list<sf::TcpSocket*> tcpsocketlist;
+    std::deque<sf::TcpSocket*> tcpsocketlist;
     sf::TcpSocket tcpsocket;
 	bool bool_isAvailable;
     bool bool_isServer;  // true = server, false = client.
