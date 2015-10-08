@@ -30,64 +30,57 @@ void NetworkManager::EventHandle()
         //if it is a server
         if(bool_isServer == true)
         {
-            //if there is a connection request and the lobby is not full, accept it
-            if (listener.accept(tcpsocket) == sf::Socket::Done && ptrData->getPlayerNumber() < 4)
-            {
-                std::cout << "New connection from" << tcpsocket.getRemoteAddress() << " " << std::endl;
-                
-				//insert the socket into the list
-				tcpsocketlist.push_back(&tcpsocket);
-				
-				//add one player to the data
-				Player newPlayer;
-				ptrData->InsertPlayer(newPlayer);
+			std::unique_ptr<sf::TcpSocket> tcphold(new sf::TcpSocket);
+			tcphold->setBlocking(false); 
 
-                //send the lobby information
-				int playerindex_forPacket = 1;
-				for (sf::TcpSocket* socket : tcpsocketlist)
-				{
-					_Menu_SendLobbyInfo(socket, playerindex_forPacket);
-					playerindex_forPacket++;
-				}
-				
-            }
-
-			int toberemoved;
-			bool needremoved = false;
-			//for each socket in the list, check the status
-			for (sf::TcpSocket* socket : tcpsocketlist)
+			if (listener.accept(*tcphold) == sf::Socket::Done)
 			{
-				//server_Checksocket(*socket);
-				/*
-				The reason of server_Checksocket is disabled is that after the last element of tcpsocketlist is deleted, the iterator of
-				this for loop points to a non-exist socket, causing the program crash.
-				I make up a post-delete method to temporary solve this problem. Problem: if two people disconnect at the same 
-				time, the program may delete one player only. I need a better solution.
-				*/
-				sf::Packet packet;
-				if (socket->receive(packet) == sf::Socket::Done)
-				{
-					PacketInfo info;
-					packet >> info;
-					//if the player disconnect, remove it
-					if (info == PacketInfo::Disconnect_request)
-					{
-						int playerindex;
-						packet >> playerindex;
-						ptrData->RemovePlayer(playerindex);
-						toberemoved = playerindex - 1;
-						needremoved = true;
+				std::cout << "New connection from " << tcphold->getRemoteAddress() << "." << std::endl;
 
-						std::cout << "a player has disconnected." << std::endl;
-						ptrData->RebuildPlayer(ptrData->getPlayerNumber());
-					}
+				tcpsocketlist.push_back(std::move(tcphold));
+
+				ptrData->AddPlayer();
+
+				//update menu info
+				int tempIndex = 1;
+				for (std::unique_ptr<sf::TcpSocket> &socket : tcpsocketlist)
+				{
+					_Menu_SendLobbyInfo(socket, tempIndex);
+					tempIndex++;
 				}
 			}
-			if (needremoved)
+
+			//check if a packet is received
+			for (std::list<std::unique_ptr<sf::TcpSocket>>::iterator it = tcpsocketlist.begin(); it != tcpsocketlist.end(); )
 			{
-				//remove the socket in the tcpsocketlist
-				tcpsocketlist[toberemoved]->disconnect();
-				tcpsocketlist.erase(tcpsocketlist.begin() + toberemoved);
+				sf::Packet newPacket;
+				if ((*it)->receive(newPacket) == sf::Socket::Done)
+				{
+					PacketInfo info;
+					newPacket >> info;
+					switch (info)
+					{
+					case PacketInfo::Disconnect_request:
+						int playerindex;
+						newPacket >> playerindex;
+						ptrData->RemovePlayer(playerindex);
+						it = tcpsocketlist.erase(it);
+
+						//send update menu info to all players
+						int tempIndex = 1;
+						for (std::unique_ptr<sf::TcpSocket> &socket : tcpsocketlist)
+						{
+							_Menu_SendLobbyInfo(socket, tempIndex);
+							tempIndex++;
+						}
+						break;
+					}
+				}
+
+				if (it != tcpsocketlist.end())
+				{
+					it++;
+				}
 			}
         }
         //else, it is a client
@@ -122,7 +115,11 @@ void NetworkManager::Menu_stopListening()
     //close all client socket
     listener.close();
     
-    //...tcpsocket.disconnect();
+	for (std::unique_ptr<sf::TcpSocket> &socket : tcpsocketlist)
+	{
+		socket->disconnect();
+	}
+	tcpsocketlist.clear();
     
     bool_isAvailable = false;
 }
@@ -157,7 +154,7 @@ bool NetworkManager::Menu_tryConnect(const sf::String &ip)
 	}
 }
 
-void NetworkManager::_Menu_SendLobbyInfo(sf::TcpSocket* socket, const int& playerindex)
+void NetworkManager::_Menu_SendLobbyInfo(std::unique_ptr<sf::TcpSocket>& socket, const int& playerindex)
 {
 	sf::Packet packet;
     int playercount = ptrData->getPlayerNumber();  //get the player number

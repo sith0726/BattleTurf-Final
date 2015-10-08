@@ -39,7 +39,7 @@ public:
     int getPlayerNumber(){return player.size();}
     
     //insert a player
-    void InsertPlayer(Player&);
+    void AddPlayer();
 
 	//Rebuild the list, for client only
 	void RebuildPlayer(const int& num);

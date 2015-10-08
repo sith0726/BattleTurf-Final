@@ -57,6 +57,8 @@ public:
 	Menu();
     //constructor accept network and gamedata pointers
     Menu(std::shared_ptr<NetworkManager>&, std::shared_ptr<GameData>&);
+	//load resources
+	void LoadAsset();
 	//get the menu state
 	Menu_state getState(){ return menu_state; }
 	//call in graphic update

@@ -10,8 +10,9 @@ GameData::GameData()
     player.push_back(you);
 }
 
-void GameData::InsertPlayer(Player& newPlayer)
+void GameData::AddPlayer()
 {
+	Player newPlayer;
     //if the number of players is less than 4, add 1 player
     if(player.size() < 4)
     {
@@ -24,8 +25,7 @@ void GameData::RebuildPlayer(const int& num)
 	player.clear();
 	for (int i = 0; i < num; i++)
 	{
-		Player player;
-		InsertPlayer(player);
+		AddPlayer();
 	}
 }
 

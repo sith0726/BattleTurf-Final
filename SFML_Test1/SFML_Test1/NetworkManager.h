@@ -41,7 +41,7 @@ class NetworkManager
 {
 private:
 	sf::TcpListener listener;
-    std::deque<sf::TcpSocket*> tcpsocketlist;
+	std::list<std::unique_ptr<sf::TcpSocket>> tcpsocketlist;
     sf::TcpSocket tcpsocket;
 	bool bool_isAvailable;
     bool bool_isServer;  // true = server, false = client.
@@ -49,7 +49,7 @@ private:
     
     std::shared_ptr<GameData> ptrData;  //pointer to game data
 
-	void _Menu_SendLobbyInfo(sf::TcpSocket*, const int&);
+	void _Menu_SendLobbyInfo(std::unique_ptr<sf::TcpSocket>&, const int&);
 	void _Menu_DecodeLobbyInfo(sf::Packet&);
 
 	void server_Checksocket(sf::TcpSocket&);
