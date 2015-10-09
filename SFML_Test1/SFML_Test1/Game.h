@@ -17,6 +17,8 @@ private:
 public:
     TheGame();
     TheGame(std::shared_ptr<NetworkManager>, std::shared_ptr<GameData>);
+    
+    void Graphic_update(sf::RenderWindow*);
 };
 
 #endif /* defined(__myTest__Game__) */

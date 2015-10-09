@@ -201,15 +201,14 @@ void renderingThread(sf::RenderWindow* window, std::shared_ptr<Menu> ptrmenu, st
 			// make sure menu exist...
 			if (ptrmenu)
 			{
-				//draw...
-				ptrmenu->Graphic_update(window);
+                ptrmenu->Graphic_update(window);
 			}		
 		}
 		//if the game state is "game", render the game graphics.
 		else if (gameData->getGameState() == Game_State::game)
 		{
 			// draw...
-
+            myGame->Graphic_update(window);
 		}
 		// end the current frame
 		window->display();

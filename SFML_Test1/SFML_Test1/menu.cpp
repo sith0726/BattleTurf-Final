@@ -408,9 +408,17 @@ void Menu::Mouse_clicked_update(sf::Vector2i &mouseposition)
 			menu_state = setting1;
 		}
 		//if the mouse is on the next...!!nothing happen if there is only 1 player
-		else if (clientHostNextButton.isCursor_on_button(mouseposition) && ptrGameData->getPlayerNumber() > 1)
+		else if (clientHostNextButton.isCursor_on_button(mouseposition))
 		{
 			//if players are ready, pass the data to game class and start the game.
+            //create game
+            ptrGameData->NewGame();
+            
+            //send the game context, including map, playerinfo... to each player
+            //...
+            
+            //change the menu_state to end_ingame
+            ptrGameData->setGameState(Game_State::game);
 		}
 	}
 	//in client lobby

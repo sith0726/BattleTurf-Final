@@ -63,6 +63,9 @@ void NetworkManager::EventHandle()
                     case PacketInfo::Lobby_info:
                             break;
                             
+                    case PacketInfo::Game_start :
+                            break;
+                            
 					case PacketInfo::Disconnect_request:
 						int playerindex;
 						newPacket >> playerindex;
@@ -76,8 +79,8 @@ void NetworkManager::EventHandle()
 							_Menu_SendLobbyInfo(socket, tempIndex);
 							tempIndex++;
 						}
-						break;
-					}
+                            break;
+                    }
 				}
 
 				if (it != tcpsocketlist.end())
@@ -96,8 +99,14 @@ void NetworkManager::EventHandle()
 				packet >> info;
 				if (info == PacketInfo::Lobby_info)
 				{
+                    //decode the packet
 					_Menu_DecodeLobbyInfo(packet);
 				}
+                else if(info == PacketInfo::Game_start)
+                {
+                    //decode the packet
+                    ptrData->setGameState(Game_State::game);
+                }
 			}
         }
     }
@@ -195,10 +204,12 @@ void NetworkManager::server_Checksocket(sf::TcpSocket& socket)
 void NetworkManager::Menu_startGame()
 {
     //call game creation
-    //...
+    ptrData->NewGame();
     
-    //change the state to game
-    //...
+    //send game data
+    
+    //stop listening
+    
 }
 
 void NetworkManager::Menu_clientReady()

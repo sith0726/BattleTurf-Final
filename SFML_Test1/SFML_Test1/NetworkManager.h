@@ -16,7 +16,7 @@ Game_currentbox = update other players location
 Disconnect_request = a client tries to desconnect from server
 ShutDown_warning = the server is shutting down.
 */
-enum PacketInfo{Lobby_info,Disconnect_request};
+enum PacketInfo{Lobby_info,Disconnect_request, Game_start};
 
 //overlad the operator <<
 template <typename Enum>

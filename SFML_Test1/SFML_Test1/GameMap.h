@@ -20,9 +20,15 @@ private:
 public:
 	//constructor
 	GameMap();
+    
+    //reset the map
+    void reset();
 
-	//get the currentbox
-	Box& getCurrentBox(const sf::Vector2i &mouseposition);
+	//get the currentbox (cannot be modified directly)
+	const Box& getCurrentBox(const sf::Vector2i &mouseposition);
+    
+    //direct capture the box
+    bool captureBox(const Box& newBox, const sf::Vector2i &mouseposition);
 
 	//for window drawing
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;

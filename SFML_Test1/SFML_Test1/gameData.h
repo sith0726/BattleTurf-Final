@@ -66,5 +66,8 @@ public:
     
     //game creation
     void NewGame();
+    
+    //get the gameMap
+    GameMap& getGameMap(){return gameMap;}
 };
 #endif // GAMEDATA_H

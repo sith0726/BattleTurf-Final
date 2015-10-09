@@ -14,9 +14,41 @@ GameMap::GameMap()
 
 }
 
-Box& GameMap::getCurrentBox(const sf::Vector2i& mouseposition)
+void GameMap::reset()
+{
+    //initailizing the vector map
+    for (int i = 0; i < MAP_HEIGHT; i++)
+    {
+        for (int j = 0; j < MAP_WIDTH; j++)
+        {
+            //create a new box
+            Box newBox;
+            m_Map[i][j] = newBox;
+        }
+    }
+}
+
+const Box& GameMap::getCurrentBox(const sf::Vector2i& mouseposition)
 {
 	return m_Map[mouseposition.x / 50][mouseposition.y / 50];
+}
+
+bool GameMap::captureBox(const Box& newBox, const sf::Vector2i &mouseposition)
+{
+    //get the reference of the box
+    Box targetBox = getCurrentBox(mouseposition);
+    
+    //if the box is not capturable, return false
+    if(!targetBox.isCapturable())
+    {
+        return false;
+    }
+    
+    //copy the newBox to the target
+    targetBox = newBox;
+    
+    return true;
+    
 }
 
 void GameMap::draw(sf::RenderTarget& target, sf::RenderStates states) const
