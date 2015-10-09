@@ -9,7 +9,7 @@
 
 #include "AssetManager.h" //resource manager
 #include "Player.h"
-#include "Box.h"
+#include "GameMap.h"
 #include <vector>
 #include <list>
 #include <mutex>
@@ -32,7 +32,7 @@ private:
 	int thisplayer;
 
     //map
-    //....
+	GameMap gameMap;
     
     //mutex
     std::mutex mutex;
@@ -67,28 +67,4 @@ public:
     //game creation
     void NewGame();
 };
-/*
-//some ideas for the map class
-class GameMap
-{
-private:
-    //the map is an array of boxes, 10x10 boxes and the walls at each sides,
-    //therefore we have 12x12 boxes = 144 boxes
-    static const int MAP_WIDTH = 12;
-    static const int MAP_HEIGHT = 12;
-    Box gameMap[MAP_WIDTH * MAP_HEIGHT];
-    
-    Box* currentBox;
-public:
-    //constructor
-    GameMap()
-    {
-
-    }
-    
-    
-    
-};
-
-*/
 #endif // GAMEDATA_H

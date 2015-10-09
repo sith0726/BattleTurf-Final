@@ -181,6 +181,7 @@ void PlayIntro(sf::RenderWindow *window)
 //renderingThread
 void renderingThread(sf::RenderWindow* window, std::shared_ptr<Menu> ptrmenu, std::shared_ptr<TheGame> myGame, std::shared_ptr<GameData> gameData)
 {
+	
 	// the rendering loop
 	while (window->isOpen())
 	{
@@ -213,6 +214,7 @@ void renderingThread(sf::RenderWindow* window, std::shared_ptr<Menu> ptrmenu, st
 		// end the current frame
 		window->display();
 	}
+	
 }
 
 //networking thread

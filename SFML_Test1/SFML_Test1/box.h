@@ -37,12 +37,18 @@ private:
 public:
     //constructor
     Box();
+
+	//constructor accept boxstate
+	Box(Boxstate&);
     
     //set the box to wall
     void setWall(){state = wall;}
     
     //can player capture this box?
     bool isCapturable(){return state == Boxstate::non_occupied;}
+
+	//get the box state
+	Boxstate getState() const { return state; }
     
     //get the score of this box
     int getScore(){return score;}

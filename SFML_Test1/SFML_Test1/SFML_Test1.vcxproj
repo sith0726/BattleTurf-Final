@@ -72,6 +72,7 @@
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="gameData.cpp" />
+    <ClCompile Include="GameMap.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="menu.cpp" />
     <ClCompile Include="NetworkManager.cpp" />
@@ -83,6 +84,7 @@
     <ClInclude Include="Button.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="gameData.h" />
+    <ClInclude Include="GameMap.h" />
     <ClInclude Include="menu.h" />
     <ClInclude Include="NetworkManager.h" />
     <ClInclude Include="Player.h" />
