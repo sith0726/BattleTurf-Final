@@ -1,3 +1,6 @@
+#ifndef _Button_
+#define _Button_
+
 #include <SFML/Graphics.hpp>
 
 class Button : public sf::RectangleShape
@@ -17,3 +20,5 @@ public:
 	//change texture to focus
 	void change_texture_to_focus();
 };
+
+#endif

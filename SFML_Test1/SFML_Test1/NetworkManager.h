@@ -62,11 +62,13 @@ public:
 	//call at each frame
 	void EventHandle();
 	
+    //Menu functions
 	void Menu_startListening();
     void Menu_stopListening();
 	bool Menu_tryConnect(const sf::String &);
 	void Menu_disconnect();
-	
+    void Menu_clientReady();        //the client is ready for the game
+    void Menu_startGame();          //the menu send the content of map and other stuff...
 
 	//is the program listening?
 	bool isAvailable(){ return bool_isAvailable; }

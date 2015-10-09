@@ -1,3 +1,7 @@
+/*
+ This class handle the game mechanism and on-screen graphic operations,
+ for game data, see gameData class.
+ */
 #ifndef __myTest__Game__
 #define __myTest__Game__
 

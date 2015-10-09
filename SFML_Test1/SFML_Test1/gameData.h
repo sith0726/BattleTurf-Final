@@ -1,10 +1,18 @@
+/*
+ This class handle the data behind the scence, 
+ in contrast, TheGame class handle the
+ on screen objects and operations.
+*/
+
 #ifndef GAMEDATA_H
 #define GAMEDATA_H
 
 #include "AssetManager.h" //resource manager
 #include "Player.h"
+#include "Box.h"
 #include <vector>
 #include <list>
+#include <mutex>
 #include <memory>
 
 //declare the game state
@@ -24,7 +32,10 @@ private:
 	int thisplayer;
 
     //map
-    //...
+    //....
+    
+    //mutex
+    std::mutex mutex;
     
 public:
     GameData();
@@ -53,7 +64,31 @@ public:
 	//get player's index
 	int getPlayerindex(){ return thisplayer; }
     
+    //game creation
+    void NewGame();
+};
+/*
+//some ideas for the map class
+class GameMap
+{
+private:
+    //the map is an array of boxes, 10x10 boxes and the walls at each sides,
+    //therefore we have 12x12 boxes = 144 boxes
+    static const int MAP_WIDTH = 12;
+    static const int MAP_HEIGHT = 12;
+    Box gameMap[MAP_WIDTH * MAP_HEIGHT];
+    
+    Box* currentBox;
+public:
+    //constructor
+    GameMap()
+    {
+
+    }
+    
+    
+    
 };
 
+*/
 #endif // GAMEDATA_H
-

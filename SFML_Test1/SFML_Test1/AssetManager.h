@@ -1,3 +1,6 @@
+#ifndef _AssetManager_
+#define _AssetManager_
+
 #include <SFML/Graphics.hpp>
 #include <map>
 #include <assert.h>
@@ -18,3 +21,5 @@ public:
 	static sf::Texture& GetTexture(std::string const& filename);
 	static sf::Font& GetFont(std::string const& filename);
 };
+
+#endif

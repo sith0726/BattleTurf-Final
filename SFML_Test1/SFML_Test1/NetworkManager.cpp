@@ -60,6 +60,9 @@ void NetworkManager::EventHandle()
 					newPacket >> info;
 					switch (info)
 					{
+                    case PacketInfo::Lobby_info:
+                            break;
+                            
 					case PacketInfo::Disconnect_request:
 						int playerindex;
 						newPacket >> playerindex;
@@ -187,5 +190,19 @@ void NetworkManager::Menu_disconnect()
 void NetworkManager::server_Checksocket(sf::TcpSocket& socket)
 {
 
+}
+
+void NetworkManager::Menu_startGame()
+{
+    //call game creation
+    //...
+    
+    //change the state to game
+    //...
+}
+
+void NetworkManager::Menu_clientReady()
+{
+    //send OK packet to server
 }
 
