@@ -3,6 +3,9 @@
 //constructor
 GameMap::GameMap()
 {
+	//initialize the available box
+	available_Box = MAP_HEIGHT * MAP_WIDTH;
+
 	//initailizing the vector map
 	for (int i = 0; i < MAP_HEIGHT; i++)
 	{
@@ -11,26 +14,49 @@ GameMap::GameMap()
 			m_Map[i][j].setPosition(sf::Vector2f(50 * j, 50 * i));
 		}
 	}
-
 }
 
-void GameMap::reset()
+void GameMap::create()
 {
-    //initailizing the vector map
-    for (int i = 0; i < MAP_HEIGHT; i++)
-    {
-        for (int j = 0; j < MAP_WIDTH; j++)
-        {
-            //create a new box
-            Box newBox;
-            m_Map[i][j] = newBox;
-        }
-    }
+	//the edge are walls
+	for (int i = 0; i < MAP_HEIGHT; i++)
+	{
+		if (m_Map[i][0].setWall())
+		{
+			available_Box--;
+		}
+		if (m_Map[i][MAP_HEIGHT - 1].setWall())
+		{
+			available_Box--;
+		}
+	}
+	for (int i = 0; i < MAP_WIDTH; i++)
+	{
+		if (m_Map[0][i].setWall())
+		{
+			available_Box--;
+		}
+		if (m_Map[MAP_WIDTH - 1][i].setWall())
+		{
+			available_Box--;
+		}
+	}
+
+	//generate walls
+	int wallCount = 0;
+	while (wallCount < 20)
+	{
+		if (m_Map[rand() % MAP_HEIGHT][rand() % MAP_WIDTH].setWall())
+		{
+			wallCount++;
+			available_Box--;
+		}
+	}
 }
 
-const Box& GameMap::getCurrentBox(const sf::Vector2i& mouseposition)
+Box& GameMap::getCurrentBox(const sf::Vector2i& mouseposition)
 {
-	return m_Map[mouseposition.x / 50][mouseposition.y / 50];
+	return m_Map[mouseposition.y / 50][mouseposition.x / 50];
 }
 
 bool GameMap::captureBox(const Box& newBox, const sf::Vector2i &mouseposition)

@@ -20,10 +20,7 @@ Player::Player(const int& size)
 
 void Player::resetList(const int& size)
 {
-    for(int i = 0; i < size; i++)
-    {
-        
-    }
+	scoreList.clear();
 }
 
 int Player::getNextScore()

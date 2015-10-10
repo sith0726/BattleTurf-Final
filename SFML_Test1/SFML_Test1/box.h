@@ -41,8 +41,8 @@ public:
 	//constructor accept boxstate
 	Box(Boxstate&);
     
-    //set the box to wall
-    void setWall(){state = wall;}
+    //try set the box to wall, if success return true, if fail return false
+	bool setWall();
     
     //can player capture this box?
     bool isCapturable(){return state == Boxstate::non_occupied;}

@@ -28,7 +28,8 @@ public:
     //if the iterator reaches the end of the list, it returns 0
     int getNextScore();
     
-    
+	//get the scoreList
+	std::list<int>& getScoreList(){ return scoreList; }
     
 };
 

@@ -105,6 +105,7 @@ void NetworkManager::EventHandle()
                 else if(info == PacketInfo::Game_start)
                 {
                     //decode the packet
+
                     ptrData->setGameState(Game_State::game);
                 }
 			}

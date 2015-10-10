@@ -14,10 +14,17 @@ class TheGame
 private:
     std::shared_ptr<GameData> ptrData;
     std::shared_ptr<NetworkManager> ptrNet;
+
+	//a pointer pointing to the previous Box, for graphing
+	Box* previousBox;
 public:
     TheGame();
     TheGame(std::shared_ptr<NetworkManager>, std::shared_ptr<GameData>);
     
+	void Mouse_moved_update(sf::Vector2i &mouseposition);
+
+	void Mouse_clicked_update(sf::Vector2i &mouseposition);
+
     void Graphic_update(sf::RenderWindow*);
 };
 

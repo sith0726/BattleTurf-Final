@@ -2,6 +2,8 @@
 #define _GAMEMAP_
 
 #include "box.h"
+#include <time.h>
+#include <stdio.h>
 #include <SFML/Network.hpp>
 #include <vector>
 
@@ -9,23 +11,21 @@
 //It consists of an array of boxes, which are the important part of the game.
 class GameMap : public sf::Drawable
 {
-private:
+public:
 	//the map is an array of boxes, 10x10 boxes and the walls at each sides,
 	//therefore we have 12x12 boxes = 144 boxes
 	static const int MAP_WIDTH = 12;
 	static const int MAP_HEIGHT = 12;
-	Box m_Map[MAP_HEIGHT][MAP_WIDTH];
+	static const int MAP_NUM_WALL = 20;
 
-	Box* currentBox;
-public:
 	//constructor
 	GameMap();
     
-    //reset the map
-    void reset();
+    //create the map
+    void create();
 
-	//get the currentbox (cannot be modified directly)
-	const Box& getCurrentBox(const sf::Vector2i &mouseposition);
+	//get the currentbox 
+	Box& getCurrentBox(const sf::Vector2i &mouseposition);
     
     //direct capture the box
     bool captureBox(const Box& newBox, const sf::Vector2i &mouseposition);
@@ -36,5 +36,14 @@ public:
 	//packet operator overloading
 	friend sf::Packet& operator<<(sf::Packet&, const GameMap&);
 	friend sf::Packet& operator>>(sf::Packet&, GameMap&);
+
+	//get the amount of remain boxes
+	int getAvailableBox(){ return available_Box; }
+
+private:
+	Box m_Map[MAP_HEIGHT][MAP_WIDTH];
+
+	//the amount of boxes that remains empty
+	int available_Box;
 };
 #endif

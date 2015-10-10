@@ -26,7 +26,7 @@ private:
     //game state
     Game_State game_state;
     //list of players
-    std::list<Player> player;
+    std::list<Player> playerList;
 
 	//index of this player
 	int thisplayer;
@@ -47,7 +47,7 @@ public:
     void setGameState(const Game_State &newState){game_state = newState;}
     
     //get the number of players
-    int getPlayerNumber(){return player.size();}
+    int getPlayerNumber(){return playerList.size();}
     
     //insert a player
     void AddPlayer();

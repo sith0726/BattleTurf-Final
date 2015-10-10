@@ -73,6 +73,7 @@ int main()
 				else if (gameData->getGameState() == game)
 				{
 					//call game's mouse update function
+					myGame->Mouse_moved_update(mouseposition);
 				}
 			}
 
@@ -102,6 +103,7 @@ int main()
 				else if (gameData->getGameState() == game)
 				{
 					//call game's mouse clicked update function
+					myGame->Mouse_clicked_update(mouseposition);
 				}
 			}	
 
