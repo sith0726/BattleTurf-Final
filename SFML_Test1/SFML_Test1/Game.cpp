@@ -28,6 +28,14 @@ void TheGame::Mouse_moved_update(sf::Vector2i &mouseposition)
 
 	Box& hold = ptrData->getGameMap().getCurrentBox(mouseposition);
 
+	//if the box is not empty, return 
+	{
+		if (hold.getState() != Boxstate::non_occupied)
+		{
+			return;
+		}
+	}
+
 	//change the box where the cursor located to focus
 	hold.change_texture_to_focus();
 
@@ -37,6 +45,10 @@ void TheGame::Mouse_moved_update(sf::Vector2i &mouseposition)
 
 void TheGame::Mouse_clicked_update(sf::Vector2i &mouseposition)
 {
-	//ptrData->getGameMap().captureBox()
-	ptrData->getGameMap().getCurrentBox(mouseposition).setFillColor(sf::Color::Blue);
+	//create a box
+	Box box(ptrData->getCurrentPlayer());
+	//set the position of the box
+	box.setPosition(ptrData->getGameMap().getCurrentBox(mouseposition).getPosition());
+	//copy the box into the map
+	ptrData->getGameMap().captureBox(box,mouseposition);
 }

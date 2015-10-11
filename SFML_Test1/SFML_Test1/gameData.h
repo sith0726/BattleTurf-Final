@@ -26,7 +26,9 @@ private:
     //game state
     Game_State game_state;
     //list of players
-    std::list<Player> playerList;
+    std::list<Player> playerList;		//0 = player1, 1 = player2, 2 = player3, 3 = player4
+	//the iterator of PlayerList
+	std::list<Player>::iterator playerList_it;
 
 	//index of this player
 	int thisplayer;
@@ -69,5 +71,8 @@ public:
     
     //get the gameMap
     GameMap& getGameMap(){return gameMap;}
+
+	//get the current Player
+	Player& getCurrentPlayer(){ return *playerList_it; }
 };
 #endif // GAMEDATA_H

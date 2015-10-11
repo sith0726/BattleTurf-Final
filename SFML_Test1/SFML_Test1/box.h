@@ -40,6 +40,9 @@ public:
 
 	//constructor accept boxstate
 	Box(Boxstate&);
+
+	//constructor accept player
+	Box(Player&);
     
     //try set the box to wall, if success return true, if fail return false
 	bool setWall();
@@ -52,6 +55,8 @@ public:
     
     //get the score of this box
     int getScore(){return score;}
-    
+
+	//get the owner
+	const Player* getOwner(){ return owner; }
 };
 #endif

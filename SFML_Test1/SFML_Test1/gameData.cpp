@@ -1,4 +1,5 @@
 #include "gameData.h"
+#include <iostream> //debug
 
 GameData::GameData()
 {
@@ -51,10 +52,20 @@ void GameData::NewGame()
 
     //create new map
 	gameMap.create();
+
+	//set the basic texture path of each player
+
+	std::string texture_path[] = { "Texture/box_blue_1_", "Texture/box_red_1_", "Texture/box_green_1_", "Texture/box_yellow_1_" };
+	int numPlayer = 0;
+	for (Player &player : playerList)
+	{
+		player.setTexturePath(texture_path[numPlayer]);
+		numPlayer++;
+	}
     
 	//generate a score pool
 	std::vector<int> score_pool;
-	for (int i = 0; i < gameMap.getAvailableBox() / playerList.size(); i++)
+	for (unsigned int i = 0; i < gameMap.getAvailableBox() / playerList.size(); i++)
 	{
 		score_pool.push_back(rand() % 27 + 3);
 	}
@@ -67,6 +78,8 @@ void GameData::NewGame()
 			player.getScoreList().push_back(score);
 		}
 	}
+	//when start, the iterator points to begining
+	playerList_it = playerList.begin(); 
 
     mutex.unlock();
 }

@@ -13,6 +13,9 @@ private:
     
     //player total score
     int score;
+
+	//the texture path of this player
+	std::string texture_path;
     
 public:
     //constructor
@@ -30,7 +33,12 @@ public:
     
 	//get the scoreList
 	std::list<int>& getScoreList(){ return scoreList; }
+
+	//set the texturepath
+	void setTexturePath(const std::string& newpath){ texture_path = newpath; }
     
+	//get the texturepath
+	const std::string& getTexturePath() const { return texture_path; }
 };
 
 #endif
