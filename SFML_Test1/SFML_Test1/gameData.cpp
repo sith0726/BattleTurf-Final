@@ -80,8 +80,9 @@ void GameData::NewGame()
 			player.getScoreList().push_back(score);
 		}
 	}
+
 	//when start, the iterator points to begining
-	playerList_it = playerList.begin(); 
+	playerList_it = playerList.begin();
 
     mutex.unlock();
 }

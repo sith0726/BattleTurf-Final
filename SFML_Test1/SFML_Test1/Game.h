@@ -17,6 +17,9 @@ private:
 
 	//a pointer pointing to the previous Box, for graphing
 	Box* previousBox;
+
+	//the box to be put into the map
+	//Box userBox;
 public:
     TheGame();
     TheGame(std::shared_ptr<NetworkManager>, std::shared_ptr<GameData>);

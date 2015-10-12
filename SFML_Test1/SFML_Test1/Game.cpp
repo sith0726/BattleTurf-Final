@@ -9,6 +9,7 @@ TheGame::TheGame(std::shared_ptr<NetworkManager> ptr1, std::shared_ptr<GameData>
 {
     ptrNet = ptr1;
     ptrData = ptr2;
+
 }
 
 
@@ -16,11 +17,11 @@ void TheGame::Graphic_update(sf::RenderWindow* window)
 {
     //draw the map
     window->draw(ptrData->getGameMap());
-    
 }
 
 void TheGame::Mouse_moved_update(sf::Vector2i &mouseposition)
 {
+
 	//if the previousBox "exist", set that box to normal texture
 	if (previousBox)
 	{
@@ -59,5 +60,6 @@ void TheGame::Mouse_clicked_update(sf::Vector2i &mouseposition)
 		ptrData->getGameMap().captureBox(box, mouseposition);
 		//next player move
 		ptrData->NextPlayer();
+
 	}
 }
