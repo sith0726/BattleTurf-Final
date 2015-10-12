@@ -72,20 +72,25 @@ bool GameMap::captureBox(const Box& newBox, const sf::Vector2i &mouseposition)
     
     //copy the newBox to the target
     targetBox = newBox;
+
+	//add score to that player
+	targetBox.getOwner()->addScore(targetBox.getScore());
     
 	//define the adjaceBoxes
 	Box *adjacentBox[] = { &targetBox - MAP_WIDTH,                                  //up
 		&targetBox + MAP_WIDTH,                                 //down
 		&targetBox - 1,    //left
 		&targetBox + 1,    //right
+		/*
 		&targetBox - MAP_WIDTH - 1,//left top
 		&targetBox + MAP_WIDTH - 1,//left bottom
 		&targetBox - MAP_WIDTH + 1,//right top
 		&targetBox + MAP_WIDTH + 1//right bottom
+		*/
 	};
 
 	//check the surroundings...
-	for (int i = 0; i < 8; i++)
+	for (int i = 0; i < 4; i++)
 	{
 		if (adjacentBox[i]->getState() == Boxstate::occupied)
 		{
@@ -95,24 +100,25 @@ bool GameMap::captureBox(const Box& newBox, const sf::Vector2i &mouseposition)
 				//fortify...
 				//...
 				}
-			//else, capture that box
+			//else, if the targetBox.score > adjacentBox[i], capture that box
 			else
 			{
-
+				if (targetBox.getScore() > adjacentBox[i]->getScore())
+				{
+					//take the score away from origin player
+					int boxScore = adjacentBox[i]->getScore();
+					adjacentBox[i]->getOwner()->addScore(-boxScore);
+					//reset the owner
+					adjacentBox[i]->setOwner(targetBox.getOwner());
+					//add score to the new owner
+					targetBox.getOwner()->addScore(boxScore);
+				}		
 			}
 		}
 	}
 
 	//change the textures....
-	changeTexture(targetBox);
-
-	for (int i = 0; i < 8; i++)
-	{
-		if (adjacentBox[i]->getState() == Boxstate::occupied)
-		{
-			changeTexture(*adjacentBox[i]);
-		}
-	}
+	changeTexture(targetBox, 4);
 
     return true;
     
@@ -126,6 +132,7 @@ void GameMap::draw(sf::RenderTarget& target, sf::RenderStates states) const
 		for (int j = 0; j < MAP_WIDTH; j++)
 		{
 			target.draw(m_Map[i][j], states);
+			target.draw(m_Map[i][j].txt_score, states);
 		}
 	}
 }
@@ -160,38 +167,55 @@ sf::Packet& operator>>(sf::Packet& packet, GameMap& gameMap)
 	return packet;
 }
 
-void GameMap::changeTexture(Box& box)
+void GameMap::changeTexture(Box& box, int layer)
 {
-	//define the box at top, bottom, left, right
-	Box *foursideBox[] = { &box - MAP_WIDTH, &box + 1 , & box + MAP_WIDTH, &box - 1};
+	if (layer <= 0)
+	{
+		return;
+	}
 
-	/*declare the hash value, initialize as 0.
-	If the player also owns the top, the hash value +1
-	If the player also owns the right, the hash value +5
-	If the player also owns the bottom, the hash value +7
-	If the player also owns the left, the hash value +9
-	*/
-	int hashAddress = 0;
-	if (box.getOwner() != foursideBox[0]->getOwner())
-	{
-		hashAddress += 1;
-	}
-	if (box.getOwner() != foursideBox[1]->getOwner())
-	{
-		hashAddress += 5;
-	}
-	if (box.getOwner() != foursideBox[2]->getOwner())
-	{
-		hashAddress += 7;
-	}
-	if (box.getOwner() != foursideBox[3]->getOwner())
-	{
-		hashAddress += 9;
-	}
-	//change the texture according to the hash value
+	//define the adjaceBoxes
+	Box *adjacentBox[] = { &box - MAP_WIDTH,                                  //up
+		&box + MAP_WIDTH,                                 //down
+		&box - 1,    //left
+		&box + 1,    //right
+	};
 
-	std::string path = box.getOwner()->getTexturePath() + std::to_string(hashAddress) + ".png"; 
-		
-	box.setButtonTexture(&AssetManager::GetTexture(path), &AssetManager::GetTexture(path));
-	box.change_texture_to_normal();
+	for (int i = 0; i < 4; i++)
+	{
+		if (adjacentBox[i]->getState() == Boxstate::occupied)
+		{
+			changeTexture(*adjacentBox[i], layer - 1);
+
+			/*declare the hash value, initialize as 0.
+			If the player also owns the top, the hash value +1
+			If the player also owns the right, the hash value +5
+			If the player also owns the bottom, the hash value +7
+			If the player also owns the left, the hash value +9
+			*/
+			int hashAddress = 0;
+			if (box.getOwner() != adjacentBox[0]->getOwner())
+			{
+				hashAddress += 1;
+			}
+			if (box.getOwner() != adjacentBox[3]->getOwner())
+			{
+				hashAddress += 5;
+			}
+			if (box.getOwner() != adjacentBox[1]->getOwner())
+			{
+				hashAddress += 7;
+			}
+			if (box.getOwner() != adjacentBox[2]->getOwner())
+			{
+				hashAddress += 9;
+			}
+			//change the texture according to the hash value
+
+			std::string path = box.getOwner()->getTexturePath() + std::to_string(hashAddress) + ".png";
+
+			box.setButtonTexture(&AssetManager::GetTexture(path), &AssetManager::GetTexture(path));
+			box.change_texture_to_normal();
+		}
+	}
 }

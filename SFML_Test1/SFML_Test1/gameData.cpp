@@ -13,6 +13,8 @@ GameData::GameData()
     //add 1 player, the one that runs this program
     Player you;
 	playerList.push_back(you);
+	Player somebody;	//testing
+	playerList.push_back(somebody);
 }
 
 void GameData::AddPlayer()
@@ -82,4 +84,15 @@ void GameData::NewGame()
 	playerList_it = playerList.begin(); 
 
     mutex.unlock();
+}
+
+void GameData::NextPlayer()
+{
+	mutex.lock();
+	playerList_it++;
+	if (playerList_it == playerList.end())
+	{
+		playerList_it = playerList.begin();
+	}
+	mutex.unlock();
 }

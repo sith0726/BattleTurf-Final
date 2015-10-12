@@ -1,4 +1,5 @@
 #include "Game.h"
+
 TheGame::TheGame()
 {
     
@@ -45,10 +46,18 @@ void TheGame::Mouse_moved_update(sf::Vector2i &mouseposition)
 
 void TheGame::Mouse_clicked_update(sf::Vector2i &mouseposition)
 {
-	//create a box
-	Box box(ptrData->getCurrentPlayer());
-	//set the position of the box
-	box.setPosition(ptrData->getGameMap().getCurrentBox(mouseposition).getPosition());
-	//copy the box into the map
-	ptrData->getGameMap().captureBox(box,mouseposition);
+	//if the target box is capturable...
+	if (ptrData->getGameMap().getCurrentBox(mouseposition).isCapturable())
+	{
+		//create a box
+		Box box(ptrData->getCurrentPlayer());
+		//set the position of the box
+		box.setPosition(ptrData->getGameMap().getCurrentBox(mouseposition).getPosition());
+		//set the score
+		box.setScore(ptrData->getCurrentPlayer().getNextScore());
+		//copy the box into the map
+		ptrData->getGameMap().captureBox(box, mouseposition);
+		//next player move
+		ptrData->NextPlayer();
+	}
 }

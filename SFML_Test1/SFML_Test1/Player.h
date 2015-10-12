@@ -1,15 +1,15 @@
 #ifndef _Player_
 #define _Player_
-#include <list>
+#include <vector>
 
 class Player
 {
 private:
     //the list of score
-    std::list<int> scoreList;
+	std::vector<int> scoreList;
     
-    //the iterator of the scorelist, move 1 forword
-    std::list<int>::iterator it;
+	//the score index
+	int scoreIndex;
     
     //player total score
     int score;
@@ -32,13 +32,19 @@ public:
     int getNextScore();
     
 	//get the scoreList
-	std::list<int>& getScoreList(){ return scoreList; }
+	std::vector<int>& getScoreList(){ return scoreList; }
 
 	//set the texturepath
 	void setTexturePath(const std::string& newpath){ texture_path = newpath; }
     
 	//get the texturepath
 	const std::string& getTexturePath() const { return texture_path; }
+
+	//get the total score of that player
+	int getTotalScore(){ return score; }
+
+	//Add score to this player(actually it can be negative)
+	void  addScore(int value){ score += value; }
 };
 
 #endif

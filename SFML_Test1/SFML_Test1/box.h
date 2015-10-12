@@ -43,6 +43,9 @@ public:
 
 	//constructor accept player
 	Box(Player&);
+
+	//the score text for graphing
+	sf::Text txt_score;
     
     //try set the box to wall, if success return true, if fail return false
 	bool setWall();
@@ -56,7 +59,13 @@ public:
     //get the score of this box
     int getScore(){return score;}
 
+	//set the score of the box
+	void setScore(const int&);
+
 	//get the owner
-	const Player* getOwner(){ return owner; }
+	Player* getOwner() { return owner; }
+
+	//set the owner
+	void setOwner(Player* newOwner){ owner = newOwner; }
 };
 #endif

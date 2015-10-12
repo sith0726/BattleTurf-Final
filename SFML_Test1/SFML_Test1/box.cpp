@@ -28,6 +28,17 @@ Box::Box(Player& player)
 	this->change_texture_to_normal();
 	state = Boxstate::occupied;
 	owner = &player;
+	txt_score.setCharacterSize(30);
+	txt_score.setColor(sf::Color::Black);
+	txt_score.setFont(AssetManager::GetFont("Texture/arial.ttf"));
+}
+
+//set the score of the box, also renew the position of the txt_score
+void Box::setScore(const int& newScore)
+{
+	score = newScore;
+	txt_score.setPosition(sf::Vector2f(this->getPosition().x + 5, this->getPosition().y + 5));
+	txt_score.setString(std::to_string(score));
 }
 
 bool Box::setWall()

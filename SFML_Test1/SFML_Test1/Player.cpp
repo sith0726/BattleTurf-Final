@@ -2,8 +2,8 @@
 Player::Player()
 {
     score = 0;
-    //the iterator points at the beginning of the list
-    it = scoreList.begin();
+    //start with index 0
+	scoreIndex = 0;
 }
 
 Player::Player(const int& size)
@@ -11,8 +11,8 @@ Player::Player(const int& size)
     //the score of the player
     score = 0;
     
-    //the iterator pooints at the beginning of the list
-    it = scoreList.begin();
+    //start with index 0
+	scoreIndex = 0;
     
     //initializing the list
     //...
@@ -25,10 +25,7 @@ void Player::resetList(const int& size)
 
 int Player::getNextScore()
 {
-    int ans = 0;
-    if(it != scoreList.end())
-    {
-        ans = *it;
-    }
+	int ans = scoreList[scoreIndex];
+	scoreIndex++;
     return ans;
 }

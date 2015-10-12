@@ -46,7 +46,7 @@ private:
 	//the amount of boxes that remains empty
 	int available_Box;
 
-	//change the texture according to the surrounding texture
-	void changeTexture(Box&);
+	//change the texture according to the surrounding texture, this is a recursive function
+	void changeTexture(Box&, int layer);
 };
 #endif

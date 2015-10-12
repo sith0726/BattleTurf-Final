@@ -68,6 +68,9 @@ public:
     
     //game creation
     void NewGame();
+
+	//next player move
+	void NextPlayer();
     
     //get the gameMap
     GameMap& getGameMap(){return gameMap;}
