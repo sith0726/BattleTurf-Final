@@ -18,21 +18,21 @@ AssetManager::AssetManager()
 
 sf::Texture& AssetManager::GetTexture(std::string const& filename)
 {
-	auto& texMap = sInstance->m_Textures;
+	std::map<std::string, sf::Texture>& texMap = sInstance->m_Textures;
 	
-	auto pairFound = texMap.find(filename);
+    std::map<std::string, sf::Texture>::iterator pairFound = texMap.find(filename);
 	if (pairFound != texMap.end())
 	{
 		return pairFound->second;
 	}
 	else
 	{
-		auto& texture = texMap[filename];
+        sf::Texture& texture = texMap[filename];
 
 #ifdef _WIN32
 		texture.loadFromFile(filename);
 #elif __MACH__
-		texture.loadFromFile(resourcePath() + filename);
+        texture.loadFromFile(resourcePath() + filename);
 #endif
 		return texture;
 	}

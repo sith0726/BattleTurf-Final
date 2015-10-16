@@ -48,6 +48,16 @@ int main()
 		sf::Event event;
 		while (window.waitEvent(event))
 		{
+            
+            //get the position of the mouse (in the window)
+            sf::Vector2i mouseposition = sf::Mouse::getPosition(window);
+            
+            //update the game data for game, if the game has started
+            if(gameData->isGameCreated())
+            {
+                myGame->dataUpdate(mouseposition);
+            }
+            
 			//if window close...
 			if (event.type == sf::Event::Closed)
 			{
@@ -56,8 +66,6 @@ int main()
 			//if mouse moved...
 			if (event.type == sf::Event::MouseMoved)
 			{
-				//get the position of the mouse (in the window)
-				sf::Vector2i mouseposition = sf::Mouse::getPosition(window);
 				//if the game state is intro
 				if (gameData->getGameState() == intro)
 				{

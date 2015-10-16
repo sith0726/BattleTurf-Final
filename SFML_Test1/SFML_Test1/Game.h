@@ -18,8 +18,11 @@ private:
 	//a pointer pointing to the previous Box, for graphing
 	Box* previousBox;
 
+    //the current player's turn
+    Player* currentPlayer;
+    
 	//the box to be put into the map
-	//Box userBox;
+	Box userBox;
 public:
     TheGame();
     TheGame(std::shared_ptr<NetworkManager>, std::shared_ptr<GameData>);
@@ -29,6 +32,8 @@ public:
 	void Mouse_clicked_update(sf::Vector2i &mouseposition);
 
     void Graphic_update(sf::RenderWindow*);
+    
+    void dataUpdate(sf::Vector2i &mouseposition);
 };
 
 #endif /* defined(__myTest__Game__) */

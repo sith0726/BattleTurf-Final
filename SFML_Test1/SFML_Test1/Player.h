@@ -1,7 +1,7 @@
 #ifndef _Player_
 #define _Player_
 #include <vector>
-
+#include <iostream>
 class Player
 {
 private:

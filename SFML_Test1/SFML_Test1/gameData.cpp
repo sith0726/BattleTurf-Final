@@ -4,7 +4,9 @@
 GameData::GameData()
 {
     //when start...
-
+    //the game is not created, so set isCreated false.
+    isCreated = false;
+    
 	//Randomize
 	std::srand(time(NULL));
 
@@ -84,6 +86,8 @@ void GameData::NewGame()
 	//when start, the iterator points to begining
 	playerList_it = playerList.begin();
 
+    //game created
+    isCreated = true;
     mutex.unlock();
 }
 

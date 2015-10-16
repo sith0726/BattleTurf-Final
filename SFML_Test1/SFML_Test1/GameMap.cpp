@@ -212,8 +212,8 @@ void GameMap::changeTexture(Box& box, int layer)
 			}
 			//change the texture according to the hash value
 
-			std::string path = box.getOwner()->getTexturePath() + std::to_string(hashAddress) + ".png";
-
+            std::string path = box.getOwner()->getTexturePath() + std::to_string(hashAddress) + ".png";
+            
 			box.setButtonTexture(&AssetManager::GetTexture(path), &AssetManager::GetTexture(path));
 			box.change_texture_to_normal();
 		}

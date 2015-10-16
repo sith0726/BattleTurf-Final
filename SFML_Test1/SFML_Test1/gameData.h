@@ -39,6 +39,9 @@ private:
     //mutex
     std::mutex mutex;
     
+    //is the game created?
+    bool isCreated;
+    
 public:
     GameData();
 
@@ -77,5 +80,8 @@ public:
 
 	//get the current Player
 	Player& getCurrentPlayer(){ return *playerList_it; }
+    
+    //is the game started? (I mean created?)
+    bool isGameCreated(){return isCreated;}
 };
 #endif // GAMEDATA_H
