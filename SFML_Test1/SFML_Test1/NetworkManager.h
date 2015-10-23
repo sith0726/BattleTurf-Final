@@ -51,6 +51,7 @@ private:
 
 	void _Menu_SendLobbyInfo(std::unique_ptr<sf::TcpSocket>&, const int&);
 	void _Menu_DecodeLobbyInfo(sf::Packet&);
+    void _Menu_DecodeGameInfo(sf::Packet&);
 
 	void server_Checksocket(sf::TcpSocket&);
 public:

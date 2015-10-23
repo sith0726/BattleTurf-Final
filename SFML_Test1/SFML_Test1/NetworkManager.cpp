@@ -105,7 +105,7 @@ void NetworkManager::EventHandle()
                 else if(info == PacketInfo::Game_start)
                 {
                     //decode the packet
-
+                    _Menu_DecodeGameInfo(packet);
                     ptrData->setGameState(Game_State::game);
                 }
 			}
@@ -209,10 +209,12 @@ void NetworkManager::Menu_startGame()
     
     //send game data
     sf::Packet packet;
+    packet << PacketInfo::Game_start;
     
+    packet << ptrData->getGameMap();
     
     //stop listening
-    
+    listener.close();
 }
 
 void NetworkManager::Menu_clientReady()
@@ -220,3 +222,8 @@ void NetworkManager::Menu_clientReady()
     //send OK packet to server
 }
 
+void NetworkManager::_Menu_DecodeGameInfo(sf::Packet &packet)
+{
+    //get the gameMap reference
+    packet >> ptrData->getGameMap();
+}
