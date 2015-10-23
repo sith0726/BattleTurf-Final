@@ -17,6 +17,8 @@ GameData::GameData()
 	playerList.push_back(you);
 	Player somebody;	//testing
 	playerList.push_back(somebody);
+    Player somebodyelse;
+    playerList.push_back(somebodyelse);
 }
 
 void GameData::AddPlayer()
@@ -69,7 +71,8 @@ void GameData::NewGame()
     
 	//generate a score pool
 	std::vector<int> score_pool;
-	for (unsigned int i = 0; i < gameMap.getAvailableBox() / playerList.size(); i++)
+    int size = gameMap.getAvailableBox() / playerList.size() + 1;
+	for (unsigned int i = 0; i < size; i++)
 	{
 		score_pool.push_back(rand() % 27 + 3);
 	}
@@ -100,4 +103,17 @@ void GameData::NextPlayer()
 		playerList_it = playerList.begin();
 	}
 	mutex.unlock();
+}
+
+Player& GameData::getWinner()
+{
+    //don't blame me in case of no winner...because I don't have "Draw" image for that...
+    std::list<Player>::iterator winner = playerList.begin();
+    
+    for(std::list<Player>::iterator it = playerList.begin(); it != playerList.end(); it++)
+    {
+        if(it->getTotalScore() > winner->getTotalScore())
+            winner = it;
+    }
+    return *winner;
 }

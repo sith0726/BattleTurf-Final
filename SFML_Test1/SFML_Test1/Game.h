@@ -23,6 +23,10 @@ private:
     
 	//the box to be put into the map
 	Box userBox;
+    
+    //show the winner
+    sf::RectangleShape winnerBox;
+    
 public:
     TheGame();
     TheGame(std::shared_ptr<NetworkManager>, std::shared_ptr<GameData>);

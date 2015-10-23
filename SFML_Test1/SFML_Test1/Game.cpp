@@ -20,8 +20,18 @@ void TheGame::Graphic_update(sf::RenderWindow* window)
 {
     //draw the map
     window->draw(ptrData->getGameMap());
-    window->draw(userBox);
-    window->draw(userBox.txt_score);
+    
+    //if the game is finished, show the winner
+    if(ptrData->getGameMap().isFinished())
+    {
+        window->draw(winnerBox);
+    }
+    //if the game is not finished, show the userBox and its text
+    else
+    {
+        window->draw(userBox);
+        window->draw(userBox.txt_score);
+    }
 }
 
 void TheGame::Mouse_moved_update(sf::Vector2i &mouseposition)
@@ -74,14 +84,30 @@ void TheGame::Mouse_clicked_update(sf::Vector2i &mouseposition)
 		ptrData->getGameMap().captureBox(userBox, mouseposition);
 		//next player move
 		ptrData->NextPlayer();
-
 	}
     
+    //if the game is finished, calculate and show the winner
+    if(ptrData->getGameMap().isFinished())
+    {
+        //find who has the highest score
+        Player& winner = ptrData->getWinner();
+        
+        
+        winnerBox.setSize(sf::Vector2f(600,300));
+        winnerBox.setPosition(0, 150);
+        winnerBox.setTexture(&AssetManager::GetTexture(winner.getTexturePath() + "win.png"));
+    }
 }
 
 void TheGame::dataUpdate(sf::Vector2i &mouseposition)
 {
     //if this function is called, that means the game has created.
+    
+    //if the game is finished, do nothing
+    if(ptrData->getGameMap().isFinished())
+    {
+        return;
+    }
     
     //get the current player
     Player& player= ptrData->getCurrentPlayer();

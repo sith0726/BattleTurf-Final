@@ -83,5 +83,8 @@ public:
     
     //is the game started? (I mean created?)
     bool isGameCreated(){return isCreated;}
+    
+    //get the player who has the highest score
+    Player& getWinner();
 };
 #endif // GAMEDATA_H

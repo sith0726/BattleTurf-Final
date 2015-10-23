@@ -39,6 +39,9 @@ public:
 
 	//get the amount of remain boxes
 	int getAvailableBox(){ return available_Box; }
+    
+    //is the map finished?
+    bool isFinished(){return available_Box == 0;}
 
 private:
 	Box m_Map[MAP_HEIGHT][MAP_WIDTH];

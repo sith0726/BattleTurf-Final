@@ -76,6 +76,9 @@ bool GameMap::captureBox(const Box& newBox, const sf::Vector2i &mouseposition)
 	//add score to that player
 	targetBox.getOwner()->addScore(targetBox.getScore());
     
+    //decrement of avilable box
+    available_Box--;
+    
 	//define the adjaceBoxes
 	Box *adjacentBox[] = { &targetBox - MAP_WIDTH,                                  //up
 		&targetBox + MAP_WIDTH,                                 //down
@@ -118,7 +121,7 @@ bool GameMap::captureBox(const Box& newBox, const sf::Vector2i &mouseposition)
 	}
 
 	//change the textures....
-	changeTexture(targetBox, 4);
+	//changeTexture(targetBox, 4);
 
     return true;
     
