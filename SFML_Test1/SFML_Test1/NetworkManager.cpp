@@ -208,6 +208,8 @@ void NetworkManager::Menu_startGame()
     ptrData->NewGame();
     
     //send game data
+    sf::Packet packet;
+    
     
     //stop listening
     

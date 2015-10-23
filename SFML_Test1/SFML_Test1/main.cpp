@@ -128,9 +128,17 @@ int main()
 				}
 				else if (gameData->getGameState() == game)
 				{
-					//nothing...
+                    //nothing...
 				}
 			}
+            
+            //if special key pressed
+            if(event.type == sf::Event::KeyPressed)
+            {
+                if(gameData->getGameState() == game)
+                    myGame->KeyBoard_Press_update();
+            }
+            
 		}
 	}
 	thread.join();

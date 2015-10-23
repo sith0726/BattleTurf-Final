@@ -4,7 +4,6 @@
 #include "box.h"
 #include <time.h>
 #include <stdio.h>
-#include <SFML/Network.hpp>
 #include <vector>
 
 //the map of the game, can be drawn into the window
@@ -34,8 +33,8 @@ public:
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
 	//packet operator overloading
-	friend sf::Packet& operator<<(sf::Packet&, const GameMap&);
-	friend sf::Packet& operator>>(sf::Packet&, GameMap&);
+	//friend sf::Packet& operator<<(sf::Packet&, const GameMap&);
+	//friend sf::Packet& operator>>(sf::Packet&, GameMap&);
 
 	//get the amount of remain boxes
 	int getAvailableBox(){ return available_Box; }
@@ -43,6 +42,10 @@ public:
     //is the map finished?
     bool isFinished(){return available_Box == 0;}
 
+    //operator overload for sf::Packet
+    friend sf::Packet& operator<<(sf::Packet& packet, GameMap &map);
+    friend sf::Packet& operator>>(sf::Packet& packet, GameMap &map);
+    
 private:
 	Box m_Map[MAP_HEIGHT][MAP_WIDTH];
 

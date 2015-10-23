@@ -17,8 +17,6 @@ GameData::GameData()
 	playerList.push_back(you);
 	Player somebody;	//testing
 	playerList.push_back(somebody);
-    Player somebodyelse;
-    playerList.push_back(somebodyelse);
 }
 
 void GameData::AddPlayer()
@@ -116,4 +114,22 @@ Player& GameData::getWinner()
             winner = it;
     }
     return *winner;
+}
+
+int GameData::getScore(int index)
+{
+    if(index > getPlayerNumber() || index < 0)
+    {
+        return 0;
+    }
+    
+    std::list<Player>::iterator it = playerList.begin();
+    
+    
+    for(int i = 0; i != index; i++)
+    {
+        it++;
+    }
+    
+    return it->getTotalScore();
 }

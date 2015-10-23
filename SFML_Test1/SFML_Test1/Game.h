@@ -27,6 +27,15 @@ private:
     //show the winner
     sf::RectangleShape winnerBox;
     
+    //is the player viewing score
+    bool viewScore;
+    
+    //a layer when viewing scores
+    sf::RectangleShape viewScoreLayer;
+    
+    //texts in the viewing scores
+    sf::Text viewScores[4];
+    
 public:
     TheGame();
     TheGame(std::shared_ptr<NetworkManager>, std::shared_ptr<GameData>);
@@ -38,6 +47,9 @@ public:
     void Graphic_update(sf::RenderWindow*);
     
     void dataUpdate(sf::Vector2i &mouseposition);
+    
+    //call when keyboard pressed
+    void KeyBoard_Press_update();
 };
 
 #endif /* defined(__myTest__Game__) */

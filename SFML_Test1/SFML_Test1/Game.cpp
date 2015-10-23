@@ -12,7 +12,19 @@ TheGame::TheGame(std::shared_ptr<NetworkManager> ptr1, std::shared_ptr<GameData>
     previousBox = NULL;
     //set no player when started
     currentPlayer = NULL;
+    viewScore = false;
     
+    viewScoreLayer.setSize(sf::Vector2f(600,600));
+    viewScoreLayer.setFillColor(sf::Color(0,0,0,150));
+    
+    for(int i = 0; i < 4; i++)
+    {
+        viewScores[i].setCharacterSize(70);
+        viewScores[i].setPosition(20, 100 * i);
+        viewScores[i].setFont(AssetManager::GetFont("Texture/arial.ttf"));
+        viewScores[i].setColor(sf::Color::White);
+        viewScores[i].setString("Player" + std::to_string(i + 1) + " :");
+    }
 }
 
 
@@ -26,11 +38,24 @@ void TheGame::Graphic_update(sf::RenderWindow* window)
     {
         window->draw(winnerBox);
     }
-    //if the game is not finished, show the userBox and its text
+    //if the game is not finished...
     else
     {
-        window->draw(userBox);
-        window->draw(userBox.txt_score);
+        //if the player is viewing score, show score
+        if(viewScore == true)
+        {
+            window->draw(viewScoreLayer);
+            for(int i = 0; i < ptrData->getPlayerNumber(); i++)
+            {
+                window->draw(viewScores[i]);
+            }
+        }
+        //else, render userBox and its text
+        else
+        {
+            window->draw(userBox);
+            window->draw(userBox.txt_score);
+        }
     }
 }
 
@@ -66,6 +91,12 @@ void TheGame::Mouse_moved_update(sf::Vector2i &mouseposition)
 
 void TheGame::Mouse_clicked_update(sf::Vector2i &mouseposition)
 {
+    //if the player is viewing score, do nothing
+    if(viewScore == true)
+    {
+        return;
+    }
+    
 	//if the target box is capturable...
 	if (ptrData->getGameMap().getCurrentBox(mouseposition).isCapturable())
 	{
@@ -84,19 +115,18 @@ void TheGame::Mouse_clicked_update(sf::Vector2i &mouseposition)
 		ptrData->getGameMap().captureBox(userBox, mouseposition);
 		//next player move
 		ptrData->NextPlayer();
+        
+        //if the game is finished, calculate and show the winner
+        if(ptrData->getGameMap().isFinished())
+        {
+            //find who has the highest score
+            Player& winner = ptrData->getWinner();
+            
+            winnerBox.setSize(sf::Vector2f(600,300));
+            winnerBox.setPosition(0, 150);
+            winnerBox.setTexture(&AssetManager::GetTexture(winner.getTexturePath() + "win.png"));
+        }
 	}
-    
-    //if the game is finished, calculate and show the winner
-    if(ptrData->getGameMap().isFinished())
-    {
-        //find who has the highest score
-        Player& winner = ptrData->getWinner();
-        
-        
-        winnerBox.setSize(sf::Vector2f(600,300));
-        winnerBox.setPosition(0, 150);
-        winnerBox.setTexture(&AssetManager::GetTexture(winner.getTexturePath() + "win.png"));
-    }
 }
 
 void TheGame::dataUpdate(sf::Vector2i &mouseposition)
@@ -128,5 +158,21 @@ void TheGame::dataUpdate(sf::Vector2i &mouseposition)
         newUserBox.txt_score.setPosition(mouseposition.x + 15, mouseposition.y + 15);
         newUserBox.txt_score.setColor(sf::Color(0,0,0,150));
         userBox = newUserBox;
+    }
+    
+    //update the score...
+    for(int i = 0 ; i < ptrData->getPlayerNumber(); i++)
+    {
+        viewScores[i].setString("Player" + std::to_string(i + 1) + " : "
+                                + std::to_string(ptrData->getScore(i)));
+    }
+}
+
+void TheGame::KeyBoard_Press_update()
+{
+    
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+    {
+        viewScore = !viewScore;
     }
 }

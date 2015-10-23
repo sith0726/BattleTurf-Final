@@ -16,6 +16,7 @@
 #define _Box_
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Network.hpp>
 #include "Player.h"
 #include "Button.h"
 #include "AssetManager.h"
@@ -67,5 +68,9 @@ public:
 
 	//set the owner
 	void setOwner(Player* newOwner){ owner = newOwner; }
+    
+    //operator overload for packet
+    friend sf::Packet& operator<<(sf::Packet&, const Box& box);
+    friend sf::Packet& operator>>(sf::Packet&, Box& box);
 };
 #endif

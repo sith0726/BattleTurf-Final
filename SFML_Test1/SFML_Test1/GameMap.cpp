@@ -84,16 +84,16 @@ bool GameMap::captureBox(const Box& newBox, const sf::Vector2i &mouseposition)
 		&targetBox + MAP_WIDTH,                                 //down
 		&targetBox - 1,    //left
 		&targetBox + 1,    //right
-		/*
+		
 		&targetBox - MAP_WIDTH - 1,//left top
 		&targetBox + MAP_WIDTH - 1,//left bottom
 		&targetBox - MAP_WIDTH + 1,//right top
 		&targetBox + MAP_WIDTH + 1//right bottom
-		*/
+		
 	};
 
 	//check the surroundings...
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < 8; i++)
 	{
 		if (adjacentBox[i]->getState() == Boxstate::occupied)
 		{
@@ -101,7 +101,7 @@ bool GameMap::captureBox(const Box& newBox, const sf::Vector2i &mouseposition)
 			if (adjacentBox[i]->getOwner() == targetBox.getOwner())
 			{
 				//fortify...
-				//...
+                adjacentBox[i]->setScore(adjacentBox[i]->getScore() + 3);
 				}
 			//else, if the targetBox.score > adjacentBox[i], capture that box
 			else
@@ -121,7 +121,7 @@ bool GameMap::captureBox(const Box& newBox, const sf::Vector2i &mouseposition)
 	}
 
 	//change the textures....
-	//changeTexture(targetBox, 4);
+	changeTexture(targetBox, 4);
 
     return true;
     
@@ -139,7 +139,7 @@ void GameMap::draw(sf::RenderTarget& target, sf::RenderStates states) const
 		}
 	}
 }
-
+/*
 sf::Packet& operator<<(sf::Packet& packet, const GameMap& gameMap)
 {
 	for (int i = 0; i < gameMap.MAP_HEIGHT; i++)
@@ -169,7 +169,7 @@ sf::Packet& operator>>(sf::Packet& packet, GameMap& gameMap)
 	}
 	return packet;
 }
-
+*/
 void GameMap::changeTexture(Box& box, int layer)
 {
 	if (layer <= 0)
@@ -215,10 +215,34 @@ void GameMap::changeTexture(Box& box, int layer)
 			}
 			//change the texture according to the hash value
 
-            std::string path = box.getOwner()->getTexturePath() + std::to_string(hashAddress) + ".png";
+            std::string path = box.getOwner()->getTexturePath() + "22.png";
             
 			box.setButtonTexture(&AssetManager::GetTexture(path), &AssetManager::GetTexture(path));
 			box.change_texture_to_normal();
 		}
 	}
+}
+
+sf::Packet& operator<<(sf::Packet& packet, GameMap &map)
+{
+    //add boxes into the packet...
+    for(int i = 0; i < map.MAP_HEIGHT; i++)
+    {
+        for(int j = 0; j < map.MAP_WIDTH; j++)
+        {
+            packet << map.m_Map[i][j];
+        }
+    }
+}
+
+sf::Packet& operator>>(sf::Packet& packet, GameMap &map)
+{
+    //add boxes into the packet...
+    for(int i = 0; i < map.MAP_HEIGHT; i++)
+    {
+        for(int j = 0; j < map.MAP_WIDTH; j++)
+        {
+            packet >> map.m_Map[i][j];
+        }
+    }
 }

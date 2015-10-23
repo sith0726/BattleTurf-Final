@@ -86,5 +86,9 @@ public:
     
     //get the player who has the highest score
     Player& getWinner();
+    
+    //get the score of target player
+    int getScore(int playerindex);
+    
 };
 #endif // GAMEDATA_H

@@ -54,3 +54,57 @@ bool Box::setWall()
 	//else, the box is occupied or wall, return false.
 	return false;
 }
+
+sf::Packet& operator<<(sf::Packet& packet, const Box& box)
+{
+    //insert the state
+    if(box.state == Boxstate::non_occupied)
+    {
+        packet << 0;
+    }
+    else if(box.state == Boxstate::occupied)
+    {
+        packet << 1;
+    }
+    else if(box.state == Boxstate::wall)
+    {
+        packet << 2;
+    }
+    
+    //insert the score
+    packet << box.score;
+    
+    //insert the owner
+    //...
+    
+    return packet;
+}
+
+sf::Packet& operator>>(sf::Packet& packet, Box& box)
+{
+    //get the state
+    int state;
+    packet >> state;
+    if(state == 0)
+    {
+        box.state = Boxstate::non_occupied;
+    }
+    else if(state == 1)
+    {
+        box.state = Boxstate::occupied;
+    }
+    else if(state == 2)
+    {
+        box.state = Boxstate::wall;
+    }
+    
+    //get the score
+    int score = 0;
+    packet >> score;
+    box.score = score;
+    
+    //get the owner
+    //...
+    
+    return packet;
+}
