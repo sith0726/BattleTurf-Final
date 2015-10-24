@@ -412,11 +412,12 @@ void Menu::Mouse_clicked_update(sf::Vector2i &mouseposition)
 		{
 			//if players are ready, pass the data to game class and start the game.
             //create game
-            ptrGameData->NewGame();
+            //ptrGameData->NewGame();
             
             //send the game context, including map, playerinfo... to each player
             //...
-            
+			ptrNetworkManager->Menu_startGame();
+
             //change the menu_state to end_ingame
             ptrGameData->setGameState(Game_State::game);
 		}

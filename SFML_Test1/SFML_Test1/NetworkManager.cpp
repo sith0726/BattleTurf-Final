@@ -214,7 +214,15 @@ void NetworkManager::Menu_startGame()
     packet << ptrData->getGameMap();
     
     //stop listening
-    listener.close();
+
+	//send signal to all player
+	for (std::unique_ptr<sf::TcpSocket> &socket : tcpsocketlist)
+	{
+		socket->send(packet);
+	}
+
+	//send player's scorelist
+	//...
 }
 
 void NetworkManager::Menu_clientReady()

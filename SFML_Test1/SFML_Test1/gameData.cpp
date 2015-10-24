@@ -15,20 +15,20 @@ GameData::GameData()
     //add 1 player, the one that runs this program
     Player you;
 	playerList.push_back(you);
-	Player somebody;	//testing
-	playerList.push_back(somebody);
+	//Player somebody;	//testing
+	//playerList.push_back(somebody);
 }
 
 void GameData::AddPlayer()
 {
-    mutex.lock();
+    //mutex.lock();
 	Player newPlayer;
     //if the number of players is less than 4, add 1 player
 	if (playerList.size() < 4)
     {
 		playerList.push_back(newPlayer);
     }
-    mutex.unlock();
+    //mutex.unlock();
 }
 
 void GameData::RebuildPlayer(const int& num)

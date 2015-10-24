@@ -95,7 +95,7 @@ sf::Packet& operator>>(sf::Packet& packet, Box& box)
     }
     else if(state == 2)
     {
-        box.state = Boxstate::wall;
+		box.setWall();
     }
     
     //get the score

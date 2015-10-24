@@ -233,6 +233,7 @@ sf::Packet& operator<<(sf::Packet& packet, GameMap &map)
             packet << map.m_Map[i][j];
         }
     }
+	return packet;
 }
 
 sf::Packet& operator>>(sf::Packet& packet, GameMap &map)
@@ -245,4 +246,5 @@ sf::Packet& operator>>(sf::Packet& packet, GameMap &map)
             packet >> map.m_Map[i][j];
         }
     }
+	return packet;
 }
