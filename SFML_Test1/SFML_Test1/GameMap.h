@@ -32,10 +32,6 @@ public:
 	//for window drawing
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
-	//packet operator overloading
-	//friend sf::Packet& operator<<(sf::Packet&, const GameMap&);
-	//friend sf::Packet& operator>>(sf::Packet&, GameMap&);
-
 	//get the amount of remain boxes
 	int getAvailableBox(){ return available_Box; }
     

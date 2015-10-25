@@ -58,7 +58,6 @@ void GameData::NewGame()
 	gameMap.create();
 
 	//set the basic texture path of each player
-
 	std::string texture_path[] = { "Texture/box_blue_1_", "Texture/box_red_1_", "Texture/box_green_1_", "Texture/box_yellow_1_" };
 	int numPlayer = 0;
 	for (Player &player : playerList)
@@ -132,4 +131,68 @@ int GameData::getScore(int index)
     }
     
     return it->getTotalScore();
+}
+
+sf::Packet& GameData::fillScore_Packet(sf::Packet & packet)
+{
+    //structure :
+    //(# of player) -> for each player[(size of scoreList)->(scoreList)]
+    
+    //send the amount of player
+    packet << getPlayerNumber();
+    
+    for(Player &player : playerList)
+    {
+        //get that player's scoreList
+        std::vector<int> holdList = player.getScoreList();
+        //send the size first
+        packet << static_cast<int>(holdList.size());
+        //send the scoreList
+        for(int & num : holdList)
+        {
+            packet << num;
+        }
+    }
+}
+
+void GameData::decodeScore_Packet(sf::Packet & packet)
+{
+    //structure :
+    //(# of player) -> for each player[(size of scoreList)->(scoreList)]
+    
+    int playerNumber;
+    packet >> playerNumber;
+    if(playerNumber != getPlayerNumber())
+    {
+        std::cout << "PlayerNum Error..." << std::endl;
+    }
+    
+    for(Player &player : playerList)
+    {
+        //get the size first
+        int size;
+        packet >> size;
+        
+        //get that player's scoreList
+        std::vector<int> holdList = player.getScoreList();
+        
+        //clear the list
+        holdList.clear();
+        
+        for(int i = 0; i < size; i++)
+        {
+            int value;
+            packet >> value;
+            holdList.push_back(value);
+        }
+    }
+    
+    //set the basic texture path of each player
+    std::string texture_path[] = { "Texture/box_blue_1_", "Texture/box_red_1_", "Texture/box_green_1_", "Texture/box_yellow_1_" };
+    int numPlayer = 0;
+    for (Player &player : playerList)
+    {
+        player.setTexturePath(texture_path[numPlayer]);
+        numPlayer++;
+    }
 }

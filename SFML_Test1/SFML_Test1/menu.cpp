@@ -200,11 +200,6 @@ void Menu::Graphic_update(sf::RenderWindow *window)
 	{
 		window->draw(gameTitle);
 		window->draw(clientHostBackButton);
-		//do not show the next button unless it has more than 2 players
-		if (ptrGameData->getPlayerNumber() > 1)
-		{
-			window->draw(clientHostNextButton);
-		}
 
 		//show player info
 		for (int i = 0; i < ptrGameData->getPlayerNumber(); i++)

@@ -139,37 +139,7 @@ void GameMap::draw(sf::RenderTarget& target, sf::RenderStates states) const
 		}
 	}
 }
-/*
-sf::Packet& operator<<(sf::Packet& packet, const GameMap& gameMap)
-{
-	for (int i = 0; i < gameMap.MAP_HEIGHT; i++)
-	{
-		for (int j = 0; j < gameMap.MAP_WIDTH; j++)
-		{
-			int hold = gameMap.m_Map[i][j].getState();
-			sf::Int8 sf_int_8(hold);
-			packet << sf_int_8;
-		}
-	}
-	return packet;
-}
 
-sf::Packet& operator>>(sf::Packet& packet, GameMap& gameMap)
-{
-	for (int i = 0; i < gameMap.MAP_HEIGHT; i++)
-	{
-		for (int j = 0; j < gameMap.MAP_WIDTH; j++)
-		{
-			sf::Int8 hold;
-			packet >> hold;
-			Boxstate newstate = static_cast<Boxstate>(hold);
-			Box box(newstate);
-			gameMap.m_Map[i][j] = box;
-		}
-	}
-	return packet;
-}
-*/
 void GameMap::changeTexture(Box& box, int layer)
 {
 	if (layer <= 0)

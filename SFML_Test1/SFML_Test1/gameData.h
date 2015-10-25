@@ -90,5 +90,11 @@ public:
     //get the score of target player
     int getScore(int playerindex);
     
+    //fill player's score list in packet
+    sf::Packet& fillScore_Packet(sf::Packet &);
+    
+    //decode player's score list in packet
+    void decodeScore_Packet(sf::Packet &);
+    
 };
 #endif // GAMEDATA_H
