@@ -95,6 +95,11 @@ void TheGame::Mouse_clicked_update(sf::Vector2i &mouseposition)
     {
         return;
     }
+	//if the player is not the one that moves, do nothing
+	if (!ptrData->isYourTurn())
+	{
+		return;
+	}
 	//if this is server...
 	if (ptrNet->isServer())
 	{
@@ -109,6 +114,7 @@ void TheGame::Mouse_clicked_update(sf::Vector2i &mouseposition)
 			userBox.setPosition(position);
 			userBox.setFillColor(sf::Color(255, 255, 255, 255));
 			//set the score
+			userBox.setScore(currentPlayer->getNextScore());
 			userBox.txt_score.setPosition(position.x + 5, position.y + 5);
 			userBox.txt_score.setCharacterSize(30);
 			userBox.txt_score.setColor(sf::Color(0, 0, 0, 255));
@@ -132,10 +138,16 @@ void TheGame::dataUpdate(sf::Vector2i &mouseposition)
 {
     //if this function is called, that means the game has created.
     
-    //if the game is finished, do nothing
+	//if the game is finished, calculate and show the winner
     if(ptrData->getGameMap().isFinished())
     {
-        return;
+		//find who has the highest score
+		Player& winner = ptrData->getWinner();
+
+		winnerBox.setSize(sf::Vector2f(600, 300));
+		winnerBox.setPosition(0, 150);
+		winnerBox.setTexture(&AssetManager::GetTexture(winner.getTexturePath() + "win.png"));
+		return;
     }
     
     //get the current player
@@ -152,7 +164,7 @@ void TheGame::dataUpdate(sf::Vector2i &mouseposition)
         newUserBox.setFillColor(sf::Color(255,255,255,150));
 		newUserBox.setPosition(mouseposition.x + 10, mouseposition.y + 10);
         newUserBox.setButtonTexture(&AssetManager::GetTexture(currentPlayer->getTexturePath() + "22.png"), &AssetManager::GetTexture(currentPlayer->getTexturePath() + "22.png"));
-        newUserBox.setScore(currentPlayer->getNextScore());
+        newUserBox.setScore(currentPlayer->getCurrentScore());
         newUserBox.txt_score.setCharacterSize(50);
         newUserBox.txt_score.setPosition(mouseposition.x + 15, mouseposition.y + 15);
         newUserBox.txt_score.setColor(sf::Color(0,0,0,150));
@@ -165,17 +177,6 @@ void TheGame::dataUpdate(sf::Vector2i &mouseposition)
         viewScores[i].setString("Player" + std::to_string(i + 1) + " : "
                                 + std::to_string(ptrData->getScore(i)));
     }
-
-	//if the game is finished, calculate and show the winner
-	if (ptrData->getGameMap().isFinished())
-	{
-		//find who has the highest score
-		Player& winner = ptrData->getWinner();
-
-		winnerBox.setSize(sf::Vector2f(600, 300));
-		winnerBox.setPosition(0, 150);
-		winnerBox.setTexture(&AssetManager::GetTexture(winner.getTexturePath() + "win.png"));
-	}
 
 }
 

@@ -214,7 +214,7 @@ void GameData::decodeUpdate_Packet(sf::Packet &packet)
 		Box newUserBox(*playerList_it);
 		//set the size to 50...
 		newUserBox.setSize(sf::Vector2f(50, 50));
-		newUserBox.setScore(playerList_it->getCurrentScore());
+		newUserBox.setScore(playerList_it->getNextScore());
 
 		sf::Vector2f position = gameMap.getCurrentBox(mouseposition).getPosition();
 		//set the new position for userBox
@@ -228,4 +228,15 @@ void GameData::decodeUpdate_Packet(sf::Packet &packet)
 		//next player move
 		NextPlayer();
 	}
+}
+
+bool GameData::isYourTurn()
+{
+	auto it = playerList.begin();
+	for (int i = 0; i < thisplayer; i++)
+	{
+		it++;
+	}
+	
+	return it == playerList_it;
 }

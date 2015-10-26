@@ -125,6 +125,10 @@ void NetworkManager::EventHandle()
 					ptrData->decodeUpdate_Packet(packet);
 				}
 			}
+			else
+			{
+				std::cout << "The packet received is not completed." << std::endl;
+			}
         }
     }
 }

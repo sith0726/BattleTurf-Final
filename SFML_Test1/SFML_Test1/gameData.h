@@ -99,5 +99,8 @@ public:
 	//decode the update packet
 	void decodeUpdate_Packet(sf::Packet &);
 
+	//is Your turn to move?
+	bool isYourTurn();
+
 };
 #endif // GAMEDATA_H
