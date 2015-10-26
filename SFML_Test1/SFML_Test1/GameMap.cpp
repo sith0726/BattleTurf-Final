@@ -203,12 +203,16 @@ sf::Packet& operator<<(sf::Packet& packet, GameMap &map)
             packet << map.m_Map[i][j];
         }
     }
+
+	//add available box into the packet
+	packet << map.available_Box;
+
 	return packet;
 }
 
 sf::Packet& operator>>(sf::Packet& packet, GameMap &map)
 {
-    //add boxes into the packet...
+    //add boxes into the map...
     for(int i = 0; i < map.MAP_HEIGHT; i++)
     {
         for(int j = 0; j < map.MAP_WIDTH; j++)
@@ -216,5 +220,9 @@ sf::Packet& operator>>(sf::Packet& packet, GameMap &map)
             packet >> map.m_Map[i][j];
         }
     }
+
+	//add available box into the map
+	packet >> map.available_Box;
+
 	return packet;
 }

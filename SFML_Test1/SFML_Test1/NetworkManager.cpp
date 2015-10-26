@@ -65,7 +65,18 @@ void NetworkManager::EventHandle()
                             
                     case PacketInfo::Game_start :
                             break;
-                            
+
+					case PacketInfo::Game_update:
+					{
+						//send the same packet to all players
+						sf::Vector2i mouseposition;
+						newPacket >> mouseposition.x >> mouseposition.y;
+						Game_sendUpdate(mouseposition);
+						//put the data back to packet...?
+						newPacket << mouseposition.x << mouseposition.y;
+						ptrData->decodeUpdate_Packet(newPacket);
+						break;
+					}
 					case PacketInfo::Disconnect_request:
 						int playerindex;
 						newPacket >> playerindex;
@@ -108,6 +119,11 @@ void NetworkManager::EventHandle()
                     _Menu_DecodeGameInfo(packet);
                     ptrData->setGameState(Game_State::game);
                 }
+				else if (info == PacketInfo::Game_update)
+				{
+					//decode the packet
+					ptrData->decodeUpdate_Packet(packet);
+				}
 			}
         }
     }
@@ -238,7 +254,22 @@ void NetworkManager::_Menu_DecodeGameInfo(sf::Packet &packet)
 }
 
 
-void NetworkManager::Game_sendUpdate()
+void NetworkManager::Game_sendUpdate(sf::Vector2i mouseposition)
 {
-    
+	sf::Packet packet;
+	packet << PacketInfo::Game_update;
+
+	packet << mouseposition.x << mouseposition.y;
+	
+	if (isServer())
+	{
+		for (std::unique_ptr<sf::TcpSocket> &socket : tcpsocketlist)
+		{
+			socket->send(packet);
+		}
+	}
+	else
+	{
+		tcpsocket.send(packet);
+	}
 }

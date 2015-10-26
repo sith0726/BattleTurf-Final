@@ -153,6 +153,7 @@ sf::Packet& GameData::fillScore_Packet(sf::Packet & packet)
             packet << num;
         }
     }
+	return packet;
 }
 
 void GameData::decodeScore_Packet(sf::Packet & packet)
@@ -164,7 +165,8 @@ void GameData::decodeScore_Packet(sf::Packet & packet)
     packet >> playerNumber;
     if(playerNumber != getPlayerNumber())
     {
-        std::cout << "PlayerNum Error..." << std::endl;
+        std::cout << "PlayerNum Error...the value is " << playerNumber << std::endl;
+		RebuildPlayer(playerNumber);
     }
     
     for(Player &player : playerList)
@@ -174,7 +176,7 @@ void GameData::decodeScore_Packet(sf::Packet & packet)
         packet >> size;
         
         //get that player's scoreList
-        std::vector<int> holdList = player.getScoreList();
+        std::vector<int>& holdList = player.getScoreList();
         
         //clear the list
         holdList.clear();
@@ -195,4 +197,34 @@ void GameData::decodeScore_Packet(sf::Packet & packet)
         player.setTexturePath(texture_path[numPlayer]);
         numPlayer++;
     }
+
+	playerList_it = playerList.begin();
+
+	isCreated = true;
+}
+
+void GameData::decodeUpdate_Packet(sf::Packet &packet)
+{
+	sf::Vector2i mouseposition;
+	packet >> mouseposition.x >> mouseposition.y;
+
+	//do capture stuff
+	if (gameMap.getCurrentBox(mouseposition).isCapturable())
+	{
+		Box newUserBox(*playerList_it);
+		//set the size to 50...
+		newUserBox.setSize(sf::Vector2f(50, 50));
+
+		sf::Vector2f position = gameMap.getCurrentBox(mouseposition).getPosition();
+		//set the new position for userBox
+		newUserBox.setPosition(position);
+		//set the score
+		newUserBox.txt_score.setPosition(position.x + 5, position.y + 5);
+		newUserBox.txt_score.setCharacterSize(30);
+		newUserBox.txt_score.setColor(sf::Color(0, 0, 0, 255));
+		//copy the box into the map
+		gameMap.captureBox(newUserBox, mouseposition);
+		//next player move
+		NextPlayer();
+	}
 }

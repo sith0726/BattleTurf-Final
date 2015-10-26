@@ -70,7 +70,7 @@ public:
     void Menu_clientReady();        //the client is ready for the game
     void Menu_startGame();          //the menu send the content of map and other stuff...
     
-    void Game_sendUpdate();         //send the update data to all client
+    void Game_sendUpdate(sf::Vector2i);         //send the update data to all client / or client send his choice to server
 
 	//is the program listening?
 	bool isAvailable(){ return bool_isAvailable; }

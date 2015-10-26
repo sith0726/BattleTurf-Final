@@ -95,6 +95,9 @@ public:
     
     //decode player's score list in packet
     void decodeScore_Packet(sf::Packet &);
-    
+
+	//decode the update packet
+	void decodeUpdate_Packet(sf::Packet &);
+
 };
 #endif // GAMEDATA_H

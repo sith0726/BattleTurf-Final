@@ -398,7 +398,7 @@ void Menu::Mouse_clicked_update(sf::Vector2i &mouseposition)
 		if (clientHostBackButton.isCursor_on_button(mouseposition))
 		{
 			//if there are players in the lobby, notify them
-
+			ptrNetworkManager->Menu_stopListening();
 			//go back to menu setting1
 			menu_state = setting1;
 		}
