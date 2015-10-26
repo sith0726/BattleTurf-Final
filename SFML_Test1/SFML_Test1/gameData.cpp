@@ -214,6 +214,7 @@ void GameData::decodeUpdate_Packet(sf::Packet &packet)
 		Box newUserBox(*playerList_it);
 		//set the size to 50...
 		newUserBox.setSize(sf::Vector2f(50, 50));
+		newUserBox.setScore(playerList_it->getCurrentScore());
 
 		sf::Vector2f position = gameMap.getCurrentBox(mouseposition).getPosition();
 		//set the new position for userBox

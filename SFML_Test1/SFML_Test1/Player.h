@@ -29,7 +29,8 @@ public:
     
     //
     int getNextScore();
-    
+	int getCurrentScore(){ return scoreList[scoreIndex]; }
+
 	//get the scoreList
 	std::vector<int>& getScoreList(){ return scoreList; }
 
