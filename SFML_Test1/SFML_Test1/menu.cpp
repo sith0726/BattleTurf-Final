@@ -106,44 +106,44 @@ void Menu::LoadAsset()
 	//lobby player's state
 	lobby_Players_state[0].setPosition(sf::Vector2f(200, 300));
 	lobby_Players_state[0].setSize(sf::Vector2f(250, 50));
-	lobby_Players_state[0].setOutlineThickness(2);
-	lobby_Players_state[0].setOutlineColor(sf::Color::Black);
+	lobby_Players_state[0].setButtonTexture(&AssetManager::GetTexture("Texture/menu_Player1.png"), &AssetManager::GetTexture("Texture/menu_Player1.png"));
+	lobby_Players_state[0].change_texture_to_normal();
 
 	lobby_Players_state[1].setPosition(sf::Vector2f(200, 350));
 	lobby_Players_state[1].setSize(sf::Vector2f(250, 50));
-	lobby_Players_state[1].setOutlineThickness(2);
-	lobby_Players_state[1].setOutlineColor(sf::Color::Black);
+	lobby_Players_state[1].setButtonTexture(&AssetManager::GetTexture("Texture/menu_Player2.png"), &AssetManager::GetTexture("Texture/menu_Player2.png"));
+	lobby_Players_state[1].change_texture_to_normal();
 
 	lobby_Players_state[2].setPosition(sf::Vector2f(200, 400));
-	lobby_Players_state[2].setSize(sf::Vector2f(250, 50));
-	lobby_Players_state[2].setOutlineThickness(2);
-	lobby_Players_state[2].setOutlineColor(sf::Color::Black);
+	lobby_Players_state[2].setSize(sf::Vector2f(250, 50));;
+	lobby_Players_state[2].setButtonTexture(&AssetManager::GetTexture("Texture/menu_Player3.png"), &AssetManager::GetTexture("Texture/menu_Player3.png"));
+	lobby_Players_state[2].change_texture_to_normal();
 
 	lobby_Players_state[3].setPosition(sf::Vector2f(200, 450));
 	lobby_Players_state[3].setSize(sf::Vector2f(250, 50));
-	lobby_Players_state[3].setOutlineThickness(2);
-	lobby_Players_state[3].setOutlineColor(sf::Color::Black);
+	lobby_Players_state[3].setButtonTexture(&AssetManager::GetTexture("Texture/menu_Player4.png"), &AssetManager::GetTexture("Texture/menu_Player4.png"));
+	lobby_Players_state[3].change_texture_to_normal();
 
 	//Player's name
-	PlayerName[0].setPosition(sf::Vector2f(200, 290));
+	PlayerName[0].setPosition(sf::Vector2f(250, 300));
 	PlayerName[0].setCharacterSize(40);
 	PlayerName[0].setString("Player1");
 	PlayerName[0].setFont(AssetManager::GetFont("Texture/arial.ttf"));
 	PlayerName[0].setColor(sf::Color::Black);
 
-	PlayerName[1].setPosition(sf::Vector2f(200, 340));
+	PlayerName[1].setPosition(sf::Vector2f(250, 350));
 	PlayerName[1].setCharacterSize(40);
 	PlayerName[1].setString("Player2");
 	PlayerName[1].setFont(AssetManager::GetFont("Texture/arial.ttf"));
 	PlayerName[1].setColor(sf::Color::Black);
 
-	PlayerName[2].setPosition(sf::Vector2f(200, 390));
+	PlayerName[2].setPosition(sf::Vector2f(250, 400));
 	PlayerName[2].setCharacterSize(40);
 	PlayerName[2].setString("Player3");
 	PlayerName[2].setFont(AssetManager::GetFont("Texture/arial.ttf"));
 	PlayerName[2].setColor(sf::Color::Black);
 
-	PlayerName[3].setPosition(sf::Vector2f(200, 440));
+	PlayerName[3].setPosition(sf::Vector2f(250, 450));
 	PlayerName[3].setCharacterSize(40);
 	PlayerName[3].setString("Player4");
 	PlayerName[3].setFont(AssetManager::GetFont("Texture/arial.ttf"));
