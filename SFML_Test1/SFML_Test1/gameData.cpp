@@ -77,6 +77,14 @@ void GameData::NewGame()
     //set player's scorelist
 	for (Player & player : playerList)
 	{
+		//randomly swap the score_pool
+		for (int i = 0; i < score_pool.size(); i++)
+		{
+			int random = rand() % score_pool.size();
+			int hold = score_pool[random];
+			score_pool[i] = score_pool[random];
+			score_pool[random] = hold;
+		}
 		for (int & score : score_pool)
 		{
 			player.getScoreList().push_back(score);
@@ -104,7 +112,7 @@ void GameData::NextPlayer()
 
 Player& GameData::getWinner()
 {
-    //don't blame me in case of no winner...because I don't have "Draw" image for that...
+    //don't blame me in case of no winner...because I don't have image for that...
     std::list<Player>::iterator winner = playerList.begin();
     
     for(std::list<Player>::iterator it = playerList.begin(); it != playerList.end(); it++)
