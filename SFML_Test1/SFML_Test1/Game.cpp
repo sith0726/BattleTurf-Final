@@ -51,7 +51,7 @@ void TheGame::Graphic_update(sf::RenderWindow* window)
             }
         }
         //else, render userBox and its text
-        else
+		else if (currentPlayer == &ptrData->getCurrentPlayer())
         {
             window->draw(userBox);
             window->draw(userBox.txt_score);

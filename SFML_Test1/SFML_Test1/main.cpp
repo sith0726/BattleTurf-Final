@@ -19,7 +19,7 @@ void networkThread(sf::RenderWindow*, std::shared_ptr<NetworkManager>);
 int main()
 {
 	// create the window (remember: it's safer to create it in the main thread due to OS limitations)
-	sf::RenderWindow window(sf::VideoMode(600, 600), "Test", sf::Style::Close);
+	sf::RenderWindow window(sf::VideoMode(600, 600), "Battle Turf", sf::Style::Close);
 
 	//set frame limit
 	window.setFramerateLimit(60);
@@ -46,9 +46,8 @@ int main()
 	while (window.isOpen())
 	{
 		sf::Event event;
-		while (window.waitEvent(event))
-		{
-            
+		while (window.pollEvent(event))
+		{   
             //get the position of the mouse (in the window)
             sf::Vector2i mouseposition = sf::Mouse::getPosition(window);
             
