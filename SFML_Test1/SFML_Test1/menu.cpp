@@ -198,6 +198,10 @@ void Menu::Graphic_update(sf::RenderWindow *window)
 	//in client lobby
 	else if (menu_state == multiplayer_lobby_client)
 	{
+		if (!ptrNetworkManager->isConnected())
+		{
+			menu_state == Menu_state::mainmenu;
+		}
 		window->draw(gameTitle);
 		window->draw(clientHostBackButton);
 
@@ -399,6 +403,7 @@ void Menu::Mouse_clicked_update(sf::Vector2i &mouseposition)
 		{
 			//if there are players in the lobby, notify them
 			ptrNetworkManager->Menu_stopListening();
+			ptrNetworkManager->Servershutdown();
 			//go back to menu setting1
 			menu_state = setting1;
 		}

@@ -20,6 +20,10 @@ NetworkManager::NetworkManager(std::shared_ptr<GameData>& ptr)
 NetworkManager::~NetworkManager()
 {
     //disconnect the socket?
+	if (isServer())
+	{
+		Servershutdown();
+	}
 }
 
 void NetworkManager::EventHandle()
@@ -123,6 +127,12 @@ void NetworkManager::EventHandle()
 				{
 					//decode the packet
 					ptrData->decodeUpdate_Packet(packet);
+				}
+				else if (info == PacketInfo::ShutDown_warning)
+				{
+					//show server shut down message
+					std::cout << "disconnected from server." << std::endl;
+					tcpsocket.disconnect();
 				}
 			}
         }
@@ -271,5 +281,17 @@ void NetworkManager::Game_sendUpdate(sf::Vector2i mouseposition)
 	else
 	{
 		tcpsocket.send(packet);
+	}
+}
+
+void NetworkManager::Servershutdown()
+{
+	sf::Packet packet;
+	packet << PacketInfo::ShutDown_warning;
+
+	for (std::unique_ptr<sf::TcpSocket> &socket : tcpsocketlist)
+	{
+		socket->send(packet);
+		socket->disconnect();
 	}
 }

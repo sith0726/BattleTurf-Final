@@ -16,7 +16,7 @@ Game_currentbox = update other players location
 Disconnect_request = a client tries to desconnect from server
 ShutDown_warning = the server is shutting down.
 */
-enum PacketInfo{Lobby_info,Disconnect_request, Game_start, Game_update};
+enum PacketInfo{ Lobby_info, Disconnect_request, Game_start, Game_update, ShutDown_warning };
 
 //overlad the operator <<
 template <typename Enum>
@@ -65,12 +65,15 @@ public:
     //Menu functions
 	void Menu_startListening();
     void Menu_stopListening();
+	bool isConnected(){ return tcpsocket.getRemoteAddress() != sf::IpAddress::None; }	//is the client connected to the server?
 	bool Menu_tryConnect(const sf::String &);
 	void Menu_disconnect();
     void Menu_clientReady();        //the client is ready for the game
     void Menu_startGame();          //the menu send the content of map and other stuff...
     
     void Game_sendUpdate(sf::Vector2i);         //send the update data to all client / or client send his choice to server
+
+	void Servershutdown();		//call when server shut down
 
 	//is the program listening?
 	bool isAvailable(){ return bool_isAvailable; }

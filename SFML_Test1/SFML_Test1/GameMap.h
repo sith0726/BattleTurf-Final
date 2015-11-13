@@ -49,6 +49,6 @@ private:
 	int available_Box;
 
 	//change the texture according to the surrounding texture, this is a recursive function
-	void changeTexture(Box&, int layer);
+	void changeTexture(Box*, int layer);
 };
 #endif

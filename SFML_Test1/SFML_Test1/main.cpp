@@ -46,17 +46,17 @@ int main()
 	while (window.isOpen())
 	{
 		sf::Event event;
+		//get the position of the mouse (in the window)
+		sf::Vector2i mouseposition = sf::Mouse::getPosition(window);
+
 		while (window.pollEvent(event))
-		{   
-            //get the position of the mouse (in the window)
-            sf::Vector2i mouseposition = sf::Mouse::getPosition(window);
-            
-            //update the game data for game, if the game has started
-            if(gameData->isGameCreated())
-            {
-                myGame->dataUpdate(mouseposition);
-            }
-            
+		{         
+			//update the game data for game, if the game has started
+			if (gameData->isGameCreated())
+			{
+				myGame->dataUpdate(mouseposition);
+			}
+
 			//if window close...
 			if (event.type == sf::Event::Closed)
 			{
