@@ -200,7 +200,8 @@ void Menu::Graphic_update(sf::RenderWindow *window)
 	{
 		if (!ptrNetworkManager->isConnected())
 		{
-			menu_state == Menu_state::mainmenu;
+			menu_state = Menu_state::mainmenu;
+			ptrGameData->RebuildPlayer(1);
 		}
 		window->draw(gameTitle);
 		window->draw(clientHostBackButton);
@@ -402,8 +403,10 @@ void Menu::Mouse_clicked_update(sf::Vector2i &mouseposition)
 		if (clientHostBackButton.isCursor_on_button(mouseposition))
 		{
 			//if there are players in the lobby, notify them
-			ptrNetworkManager->Menu_stopListening();
 			ptrNetworkManager->Servershutdown();
+			ptrNetworkManager->Menu_stopListening();
+			//clean the player list
+			ptrGameData->RebuildPlayer(1);
 			//go back to menu setting1
 			menu_state = setting1;
 		}

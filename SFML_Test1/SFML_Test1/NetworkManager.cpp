@@ -288,10 +288,10 @@ void NetworkManager::Servershutdown()
 {
 	sf::Packet packet;
 	packet << PacketInfo::ShutDown_warning;
-
+	
 	for (std::unique_ptr<sf::TcpSocket> &socket : tcpsocketlist)
 	{
 		socket->send(packet);
-		socket->disconnect();
 	}
+	
 }

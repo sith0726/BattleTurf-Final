@@ -115,6 +115,10 @@ bool GameMap::captureBox(const Box& newBox, const sf::Vector2i &mouseposition)
 					adjacentBox[i]->setOwner(targetBox.getOwner());
 					//add score to the new owner
 					targetBox.getOwner()->addScore(boxScore);
+					//change the texture
+					std::string path = adjacentBox[i]->getOwner()->getTexturePath() + "22.png";
+					adjacentBox[i]->setButtonTexture(&AssetManager::GetTexture(path), &AssetManager::GetTexture(path));
+					adjacentBox[i]->change_texture_to_normal();
 				}		
 			}
 		}
