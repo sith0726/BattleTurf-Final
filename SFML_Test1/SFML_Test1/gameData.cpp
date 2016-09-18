@@ -230,7 +230,7 @@ void GameData::decodeUpdate_Packet(sf::Packet &packet)
 		//set the score
 		newUserBox.txt_score.setPosition(position.x + 5, position.y + 5);
 		newUserBox.txt_score.setCharacterSize(30);
-		newUserBox.txt_score.setColor(sf::Color(0, 0, 0, 255));
+		newUserBox.txt_score.setFillColor(sf::Color(0, 0, 0, 255));
 		//copy the box into the map
 		gameMap.captureBox(newUserBox, mouseposition);
 		//next player move

@@ -70,7 +70,7 @@ void Menu::LoadAsset()
 	txt_EnterIP.setCharacterSize(40);
 	txt_EnterIP.setPosition(sf::Vector2f(150, 325));
 	txt_EnterIP.setString("Enter IP:");
-	txt_EnterIP.setColor(sf::Color::Black);
+	txt_EnterIP.setFillColor(sf::Color::Black);
 	txt_EnterIP.setFont(AssetManager::GetFont("Texture/arial.ttf"));
 
 	//IP input box in client
@@ -83,7 +83,7 @@ void Menu::LoadAsset()
 	//IP server IP in client
 	txt_serverIP.setPosition(sf::Vector2f(150, 400));
 	txt_serverIP.setCharacterSize(40);
-	txt_serverIP.setColor(sf::Color::Black);
+	txt_serverIP.setFillColor(sf::Color::Black);
 	txt_serverIP.setFont(AssetManager::GetFont("Texture/arial.ttf"));
 
 	//lobby player's color
@@ -129,25 +129,25 @@ void Menu::LoadAsset()
 	PlayerName[0].setCharacterSize(40);
 	PlayerName[0].setString("Player1");
 	PlayerName[0].setFont(AssetManager::GetFont("Texture/arial.ttf"));
-	PlayerName[0].setColor(sf::Color::Black);
+	PlayerName[0].setFillColor(sf::Color::Black);
 
 	PlayerName[1].setPosition(sf::Vector2f(250, 350));
 	PlayerName[1].setCharacterSize(40);
 	PlayerName[1].setString("Player2");
 	PlayerName[1].setFont(AssetManager::GetFont("Texture/arial.ttf"));
-	PlayerName[1].setColor(sf::Color::Black);
+	PlayerName[1].setFillColor(sf::Color::Black);
 
 	PlayerName[2].setPosition(sf::Vector2f(250, 400));
 	PlayerName[2].setCharacterSize(40);
 	PlayerName[2].setString("Player3");
 	PlayerName[2].setFont(AssetManager::GetFont("Texture/arial.ttf"));
-	PlayerName[2].setColor(sf::Color::Black);
+	PlayerName[2].setFillColor(sf::Color::Black);
 
 	PlayerName[3].setPosition(sf::Vector2f(250, 450));
 	PlayerName[3].setCharacterSize(40);
 	PlayerName[3].setString("Player4");
 	PlayerName[3].setFont(AssetManager::GetFont("Texture/arial.ttf"));
-	PlayerName[3].setColor(sf::Color::Black);
+	PlayerName[3].setFillColor(sf::Color::Black);
 }
 
 void Menu::Graphic_update(sf::RenderWindow *window)

@@ -22,7 +22,7 @@ TheGame::TheGame(std::shared_ptr<NetworkManager> ptr1, std::shared_ptr<GameData>
         viewScores[i].setCharacterSize(70);
         viewScores[i].setPosition(20, 100 * i);
         viewScores[i].setFont(AssetManager::GetFont("Texture/arial.ttf"));
-        viewScores[i].setColor(sf::Color::White);
+        viewScores[i].setFillColor(sf::Color::White);
         viewScores[i].setString("Player" + std::to_string(i + 1) + " :");
     }
 }
@@ -117,7 +117,7 @@ void TheGame::Mouse_clicked_update(sf::Vector2i &mouseposition)
 			userBox.setScore(currentPlayer->getNextScore());
 			userBox.txt_score.setPosition(position.x + 5, position.y + 5);
 			userBox.txt_score.setCharacterSize(30);
-			userBox.txt_score.setColor(sf::Color(0, 0, 0, 255));
+			userBox.txt_score.setFillColor(sf::Color(0, 0, 0, 255));
 			//copy the box into the map
 			ptrData->getGameMap().captureBox(userBox, mouseposition);
 			//next player move
@@ -167,7 +167,7 @@ void TheGame::dataUpdate(sf::Vector2i &mouseposition)
         newUserBox.setScore(currentPlayer->getCurrentScore());
         newUserBox.txt_score.setCharacterSize(50);
         newUserBox.txt_score.setPosition(mouseposition.x + 15, mouseposition.y + 15);
-        newUserBox.txt_score.setColor(sf::Color(0,0,0,150));
+        newUserBox.txt_score.setFillColor(sf::Color(0,0,0,150));
         userBox = newUserBox;
     }
     

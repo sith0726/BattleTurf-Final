@@ -29,7 +29,7 @@ Box::Box(Player& player)
 	state = Boxstate::occupied;
 	owner = &player;
 	txt_score.setCharacterSize(30);
-	txt_score.setColor(sf::Color::Black);
+	txt_score.setFillColor(sf::Color::Black);
 	txt_score.setFont(AssetManager::GetFont("Texture/arial.ttf"));
 }
 
